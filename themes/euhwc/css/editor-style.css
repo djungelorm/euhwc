@@ -1,0 +1,54 @@
+/*
+Theme Name: EUHWC
+Description: Used to style the TinyMCE editor.
+*/
+
+@import url(../../twentythirteen/css/editor-style.css)
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+/* Headings ------------------------------------------------------------------ */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  font-weight: normal;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 17px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+/* Links --------------------------------------------------------------------- */
+
+a, a:visited {
+  color: #00669a;
+}
+
+a:active, a:hover {
+  color: #00669a;
+}
+
+.wp-caption .wp-caption-text,
+.wp-caption-dd {
+  color: #220e10;
+}
