@@ -32,4 +32,6 @@ if ( ! is_active_sidebar( 'front-left' ) &&
     </div><!-- .widget-area -->
   <?php endif; ?>
 
+  <div class="clearboth"></div>
+
 </div><!-- #secondary -->

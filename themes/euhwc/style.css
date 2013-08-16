@@ -549,6 +549,10 @@ td {
   white-space: nowrap;
 }
 
+.clearboth {
+  clear: both;
+}
+
 /* Misc overrides ------------------------------------------------------------ */
 
 /* Page links */
