@@ -16,9 +16,9 @@ add_action('widgets_init', 'euhwc_widgets_remove', 100);
 // Register widget areas
 function euhwc_widgets_init() {
   register_sidebar( array(
-    'name'          => __('Side Widget Area', 'euhwc2'),
+    'name'          => __('Side Widget Area', 'euhwc'),
     'id'            => 'sidebar-2',
-    'description'   => __('Appears on the right hand size of posts and pages.', 'euhwc2'),
+    'description'   => __('Appears on the right hand size of posts and pages.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
@@ -28,7 +28,7 @@ function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Front Page Main Widget Area', 'twentythirteen' ),
     'id'            => 'front-main',
-    'description'   => __('Appears on the right hand side of the blurb on the homepage.', 'euhwc2'),
+    'description'   => __('Appears on the right hand side of the blurb on the homepage.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
@@ -38,7 +38,7 @@ function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Front Page Left Widget Area', 'twentythirteen' ),
     'id'            => 'front-left',
-    'description'   => __('Appears on the left hand side of the front page.', 'euhwc2'),
+    'description'   => __('Appears on the left hand side of the front page.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
@@ -48,7 +48,7 @@ function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Front Page Middle Widget Area', 'twentythirteen' ),
     'id'            => 'front-middle',
-    'description'   => __('Appears in the middle of the front page.', 'euhwc2'),
+    'description'   => __('Appears in the middle of the front page.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
@@ -58,7 +58,7 @@ function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Front Page Right Widget Area', 'twentythirteen' ),
     'id'            => 'front-right',
-    'description'   => __('Appears on the right hand side of the front page.', 'euhwc2'),
+    'description'   => __('Appears on the right hand side of the front page.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
