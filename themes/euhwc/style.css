@@ -434,6 +434,7 @@ td {
 }
 
 .site-footer .sidebar-container {
+  background-color: transparent;
 }
 
 .site-footer .widget a {
