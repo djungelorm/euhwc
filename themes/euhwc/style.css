@@ -453,6 +453,12 @@ td {
 
 /* Front page template ------------------------------------------------------- */
 
+/* Set default width for page content */
+.entry-content.front-page-template {
+	max-width: 1040px;
+	padding: 0 376px 0 60px;
+}
+
 /* Make the blurb narrower by 150px and the front-main widgets wider by 150px on large screens*/
 @media screen and (min-width: 1069px) {
   .entry-content.front-page-template {
