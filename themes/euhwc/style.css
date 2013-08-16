@@ -489,8 +489,8 @@ td {
 /* Resize the blurb to full width when front-main widgets are hidden */
 @media screen and (max-width: 1069px) {
   .entry-content.front-page-template {
-    max-width: 609px;
-    padding-right: 60px;
+    max-width: 1069px;
+    padding: 0px 60px;
   }
 }
 
