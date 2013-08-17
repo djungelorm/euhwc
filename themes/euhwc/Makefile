@@ -1,6 +1,6 @@
 dist: assets
 	rm -f euhwc.zip
-	zip -r euhwc.zip . -x euhwc.zip Makefile .gitignore assets
+	zip -r euhwc.zip . -x euhwc.zip Makefile .gitignore
 
 assets:
 	mkdir -p images
