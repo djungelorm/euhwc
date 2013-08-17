@@ -1,5 +1,11 @@
 <?php
 
+// Hide the admin bar unless the user can publish posts
+function euhwc_hide_admin_bar() {
+  return current_user_can('publish_posts');
+}
+add_filter('show_admin_bar', 'euhwc_hide_admin_bar');
+
 // Add [image_cycle] shortcode to display WP Cycle plugin
 function wp_cycle_func($atts) {
   return wp_cycle();
