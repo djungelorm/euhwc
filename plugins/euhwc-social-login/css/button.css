@@ -1,0 +1,26 @@
+/* Structure */
+
+.widget_oa_social_login {
+  white-space: nowrap;
+}
+
+.oneall_euhwc_link {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 2px;
+}
+
+.oneall_social_login_providers {
+  display: inline-block;
+}
+
+.oneall_social_login iframe {
+  width: 200px !important;
+}
+
+/* Appearance */
+
+.oneall_euhwc_link a:active,
+.oneall_euhwc_link a:focus {
+  outline: 0px none;
+}
