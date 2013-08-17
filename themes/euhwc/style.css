@@ -161,6 +161,24 @@ p.comment-form-comment {
   margin-left: 40px;
 }
 
+/* Post navigation */
+
+.post-navigation a, .navigation a:hover {
+  color: #00669a;
+}
+
+.post-navigation a:hover {
+  text-decoration: underline;
+}
+
+/* Attachments */
+
+.attachment .entry-meta a,
+.attachment .entry-meta .edit-link:before,
+.attachment .full-size-link:before {
+	color: #00669a;
+}
+
 /* Navigation menus ---------------------------------------------------------- */
 
 .nav-menu {
@@ -273,6 +291,33 @@ ul.nav-menu ul a:hover,
   padding-bottom: 10px;
 }
 
+/* Attachments --------------------------------------------------------------- */
+
+.attachment .entry-header {
+  background-color: #e8e5ce;
+  padding: 10px 0px;
+}
+
+.attachment .entry-title {
+  font-size: 20px;
+}
+
+.attachment .entry-title:before {
+	font-size: 20px;
+	margin-right: 5px;
+}
+
+.attachment .entry-meta {
+  padding: 0px;
+}
+
+/*
+.archive-title, .archive-meta {
+  font-size: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+*/
 /* Forms --------------------------------------------------------------------- */
 
 button, input, textarea {
