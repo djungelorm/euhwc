@@ -92,19 +92,7 @@ h6 {
 
 /* Links --------------------------------------------------------------------- */
 
-a {
-  color: #00669a;
-}
-
-a:visited {
-  color: #00669a;
-}
-
-a:active {
-  color: #00669a;
-}
-
-a:hover {
+a, a:visited, a:active, a:hover {
   color: #00669a;
 }
 
