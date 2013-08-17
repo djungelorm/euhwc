@@ -73,4 +73,12 @@ function euhwc_remove_twentythirteen_options() {
 }
 add_action('after_setup_theme', 'euhwc_remove_twentythirteen_options', 100);
 
+// Customise the login page
+
+function euhwc_login_style() {
+  wp_enqueue_style('euhwc_login', get_stylesheet_directory_uri() . '/css/login.css', false);
+}
+
+add_action ('login_enqueue_scripts', 'euhwc_login_style');
+
 ?>
