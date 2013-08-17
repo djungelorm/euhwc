@@ -12,7 +12,7 @@ Author: Alex Collins
 function euhwc_social_login_button() {
   wp_enqueue_style('euhwc-social-login-button');
   $content[] = '<div class="oneall_euhwc_link">';
-  $content[] = '<a href="/login" title="Log in using the EUHWC website">';
+  $content[] = '<a href="' . wp_login_url($_SERVER['REQUEST_URI']) . '" title="Log in using the EUHWC website">';
   $content[] = '<img src="' . plugins_url('euhwc-social-login/images/euhwc-button.png', 'euhwc-social-login') . '" rel="nofollow" alt="EUHWC" />';
   $content[] = '</a>';
   $content[] = '</div>';
