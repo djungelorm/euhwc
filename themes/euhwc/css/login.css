@@ -30,3 +30,8 @@ body.login div#login h1 a {
   font-size: 16pt;
   color: #222;
 }
+
+div#login {
+  margin-bottom: 40px;
+  padding-top: 0px;
+}
