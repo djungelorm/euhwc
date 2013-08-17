@@ -102,15 +102,9 @@ a, a:visited, a:active, a:hover {
 }
 
 /* Entries */
-.entry-meta a, .entry-meta a:hover {
-  color: #00669a;
-}
-
-.entry-content a, .comment-content a {
-  color: #00669a;
-}
-
-.entry-content a:hover, .comment-content a:hover {
+.entry-meta a, .entry-meta a:hover,
+.entry-content a, .entry-content a:hover,
+.comment-content a, .comment-content a:hover {
   color: #00669a;
 }
 
