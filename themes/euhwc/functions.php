@@ -76,6 +76,11 @@ add_action('after_setup_theme', 'euhwc_remove_twentythirteen_options', 100);
 // Customise the login page
 
 function euhwc_login_style() {
+  echo '<style type="text/css">
+    body.login div#login h1 a {
+      background-image: none;
+    }
+    </style>';
   wp_enqueue_style('euhwc_login', get_stylesheet_directory_uri() . '/css/login.css', false);
 }
 
