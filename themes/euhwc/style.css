@@ -600,3 +600,8 @@ td {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Fix a, a:hover not overriding twentythirteen theme */
+.comment-respond a, .comment-respond a:hover {
+  color: #00669a;
+}
