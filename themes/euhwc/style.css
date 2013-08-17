@@ -273,6 +273,19 @@ ul.nav-menu ul a:hover,
   color: #0084c8;
 }
 
+/* Fix padding on leave a reply text for small screens */
+@media (max-width: 999px) {
+  .sidebar .comment-reply-title {
+    padding: 0px 20px;
+    max-width: 604px;
+  }
+
+  .sidebar .must-log-in {
+    padding: 0px 20px;
+    max-width: 604px;
+  }
+}
+
 /* Archives ------------------------------------------------------------------ */
 
 .archive-header {
