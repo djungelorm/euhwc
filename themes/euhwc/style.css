@@ -3,7 +3,7 @@ Theme Name: EUHWC
 Description: Edinburgh University Hill Walking Club website theme.
 Template: twentythirteen
 Author: Alex Collins
-Version: 1.3
+Version: 1.4
 */
 
 @import url(../twentythirteen/style.css);
@@ -567,6 +567,69 @@ td {
   #secondary.sidebar-container.front-page-template .widget-area {
     float: none;
     width: 100%;
+  }
+}
+
+/* Floating sidebar and widgets ---------------------------------------------- */
+
+.sidebar-floating {
+  position: fixed;
+  top: 180px;
+  right: 0px;
+  background-color: #e6eef6;
+  z-index: 999;
+  border: 1px solid #999;
+  max-width: 100px;
+}
+
+#sidebar-floating-visible {
+}
+
+#sidebar-floating-hidden {
+  display: none;
+}
+
+/* Hide/show buttons */
+.sidebar-floating-button,
+.sidebar-floating-button:active,
+.sidebar-floating-button:hover,
+.sidebar-floating-button:visited {
+  color: #141412;
+}
+
+#sidebar-floating-hide {
+  position: fixed;
+  z-index: 1000;
+  right: 0px;
+  top: 180px;
+}
+
+#sidebar-floating-hidden {
+  width: 16px;
+  height: 20px;
+}
+
+/* Widget area styles */
+.sidebar-floating .widget-area {
+  padding-top: 5px;
+}
+
+.sidebar-floating .widget .widget-title {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: normal;
+  margin-bottom: 2px;
+}
+
+.sidebar-floating .widget {
+  padding: 0px 5px;
+  margin-bottom: 5px;
+}
+
+/* Hide floating widgets on small screens */
+@media (max-width: 700px) {
+  .sidebar-floating {
+    display: none;
   }
 }
 

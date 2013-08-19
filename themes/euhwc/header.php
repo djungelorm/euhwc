@@ -56,4 +56,6 @@
 			</div><!-- #navbar -->
 		</header><!-- #masthead -->
 
+    <?php get_sidebar( 'sidebar-floating' ); ?>
+
 		<div id="main" class="site-main">

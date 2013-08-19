@@ -24,7 +24,17 @@ function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Side Widget Area', 'euhwc'),
     'id'            => 'sidebar-2',
-    'description'   => __('Appears on the right hand size of posts and pages.', 'euhwc'),
+    'description'   => __('Appears on the right hand side of posts and pages.', 'euhwc'),
+    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+    'after_widget'  => '</aside>',
+    'before_title'  => '<h3 class="widget-title">',
+    'after_title'   => '</h3>',
+  ));
+
+  register_sidebar( array(
+    'name'          => __('Floating Widget Area', 'euhwc'),
+    'id'            => 'sidebar-floating',
+    'description'   => __('Appears on the right hand side at the top, floating so that is always visible.', 'euhwc'),
     'before_widget' => '<aside id="%1$s" class="widget %2$s">',
     'after_widget'  => '</aside>',
     'before_title'  => '<h3 class="widget-title">',
