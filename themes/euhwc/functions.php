@@ -84,8 +84,8 @@ function euhwc_widgets_init() {
 add_action('widgets_init', 'euhwc_widgets_init', 101);
 
 function euhwc_remove_twentythirteen_options() {
-	remove_custom_background();
-	remove_custom_image_header();
+	remove_theme_support('custom-background');
+	remove_theme_support('custom-header');
 }
 add_action('after_setup_theme', 'euhwc_remove_twentythirteen_options', 100);
 
