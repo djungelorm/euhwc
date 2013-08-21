@@ -39,6 +39,9 @@ require_once(dirname (__FILE__) . '/includes/comment-form.php');
 /**
  * Register stylesheet
  */
-wp_register_style('euhwc-social-login-button', plugins_url('euhwc-social-login/css/button.css', 'euhwc-social-login'));
+function euhwc_social_login_scripts() {
+  wp_register_style('euhwc-social-login-button', plugins_url('euhwc-social-login/css/button.css', 'euhwc-social-login'));
+}
+add_action('wp_enqueue_scripts', 'euhwc_social_login_scripts');
 
 ?>
