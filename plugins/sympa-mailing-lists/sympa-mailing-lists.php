@@ -78,7 +78,7 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
       }
     } else {
       // Request was not valid
-      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>'.sympa_form($lists, $request);
+      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>' . sympa_mailing_lists_form($lists, $request);
     }
   }
 
@@ -86,7 +86,7 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
     // Validate ticket
     $request = get_transient('sympa_form_' . $ticket);
     if ($request === false) {
-      return '<p class="error">The link has expired. Please submit the form to obtain a new link.</p>' . sympa_form($lists);
+      return '<p class="error">The link has expired. Please submit the form to obtain a new link.</p>' . sympa_mailing_lists_form($lists);
     } else {
       // Remove the ticket
       delete_transient('sympa_form_' . $ticket);
