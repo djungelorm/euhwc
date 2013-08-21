@@ -14,19 +14,23 @@ terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the COPYING file for more details.
 */
 
-// Add query var for tickets
-function sympa_form_query_vars($public_query_vars) {
-  $public_query_vars[] = 'ticket';
-  return $public_query_vars;
-}
-add_filter('query_vars', 'sympa_form_query_vars');
-
 require_once(dirname (__FILE__) . '/includes/request.php');
 require_once(dirname (__FILE__) . '/includes/email.php');
 require_once(dirname (__FILE__) . '/includes/form.php');
 
-// Shortcode for sympa forms
-function sympa_form_shortcode( $atts, $content = null ) {
+/**
+ * Add query vars for tickets and direct action links
+ */
+function sympa_mailing_lists_query_vars($public_query_vars) {
+  $public_query_vars[] = 'ticket';
+  return $public_query_vars;
+}
+add_filter('query_vars', 'sympa_mailing_lists_query_vars');
+
+/**
+ * Add shortcode to generate a mailing list management page
+ */
+function sympa_mailing_lists_shortcode( $atts, $content = null ) {
 
   // Default settings
   $timeout = WEEK_IN_SECONDS;
@@ -45,7 +49,7 @@ function sympa_form_shortcode( $atts, $content = null ) {
   $ticket = get_query_var('ticket');
 
   if ($ticket == '' && !isset($_POST['sympa_form_submit']))
-    return sympa_form($lists);
+    return sympa_mailing_lists_form($lists);
 
   if (isset($_POST['sympa_form_submit'])) {
     // Decode post data
@@ -61,12 +65,12 @@ function sympa_form_shortcode( $atts, $content = null ) {
     foreach ($list_ids as $id) {
       $req_lists[$id] = $lists_dict[$id][1];
     }
-    $request = new Request($email, $command, $req_lists);
+    $request = new SympaMailingListsRequest($email, $command, $req_lists);
 
     if ($request->valid()) {
       // Send confirmation email
       $ticket = wp_create_nonce('sympa_form' . $email . current_time('timestamp') );
-      if (sympa_form_send_confirmation_mail($request, $ticket)) {
+      if (sympa_mailing_lists_send_confirmation_mail($request, $ticket)) {
         set_transient('sympa_form_' . $ticket, $request, $timeout);
         return '<p class="success">An email has been sent to your address with a confirmation link.</p>';
       } else {
@@ -87,7 +91,7 @@ function sympa_form_shortcode( $atts, $content = null ) {
       // Remove the ticket
       delete_transient('sympa_form_' . $ticket);
       // Add to mailing list(s)
-      if (sympa_form_mailing_list_command($request))
+      if (sympa_mailing_lists_send_list_command($request))
         return '<p class="success"><span class="nowrap">' . $request->email . '</span> has been successfully ' . $request->command . 'd to <span class="nowrap">' . implode(', ', $request->lists) . '</span>.</p>';
       else
         return '<p class="error">Failed to process request!</p>';
@@ -96,6 +100,6 @@ function sympa_form_shortcode( $atts, $content = null ) {
 
 }
 
-add_shortcode('sympaform', 'sympa_form_shortcode');
+add_shortcode('sympaform', 'sympa_mailing_lists_shortcode');
 
 ?>

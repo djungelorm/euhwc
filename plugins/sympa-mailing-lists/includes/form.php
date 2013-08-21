@@ -6,8 +6,10 @@ terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the COPYING file for more details.
 */
 
-// Generates HTML for a form
-function sympa_form($lists, $request = null) {
+/**
+ * Generate form for managing a mailing list subscription
+ */
+function sympa_mailing_lists_form($lists, $request = null) {
   $result = '';
 
   global $user_email;

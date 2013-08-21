@@ -6,7 +6,10 @@ terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the COPYING file for more details.
 */
 
-function sympa_form_current_page_url() {
+/**
+ * Get an absolute URL to the current page, without query arguments
+ */
+function sympa_mailing_lists_current_page_url() {
   $url = 'http';
   if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
     $url .= 's';
@@ -17,7 +20,10 @@ function sympa_form_current_page_url() {
   return $url;
 }
 
-function sympa_form_send_confirmation_mail($request, $ticket) {
+/**
+ * Send an email to verify the email address for a request
+ */
+function sympa_mailing_lists_send_confirmation_mail($request, $ticket) {
   $subject = 'EUHWC Mailing List Subscription';
   $message = <<<EOD
 You recently requested to be %command% %lists%.
@@ -37,7 +43,7 @@ EOD;
     $command = 'unsubscribed from';
   $lists = implode(', ', $request->lists);
 
-  $url = parse_url(sympa_form_current_page_url());
+  $url = parse_url(sympa_mailing_lists_current_page_url());
   parse_str($url['query'], $query);
   $query['ticket'] = $ticket;
   $link = $url['scheme'].'://'.$url['host'].$url['path'] . '?' . http_build_query($query);
@@ -52,7 +58,10 @@ EOD;
   return wp_mail($request->email, $subject, $message, $headers);
 }
 
-function sympa_form_mailing_list_command($request) {
+/**
+ * Execute a mailing list command via email
+ */
+function sympa_mailing_lists_send_list_command($request) {
   foreach ($request->lists as $id => $list) {
     $list = explode('@', $list);
     if ($request->command == 'subscribe')
