@@ -33,15 +33,19 @@ class user_meta_widget extends WP_Widget {
       echo $args['before_title'] . $title . $args['after_title'];
 
     $current_user = wp_get_current_user();
-    echo 'Logged in as <em>' . $current_user->display_name . '</em><br/>';
 
     echo $instance['before_content'];
-
-    //$output[] = '<a href="/edit-profile">Edit profile</a><br/>';
-    echo '<a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a>';
-
+    echo '<ul>';
+    echo '<li>Logged in as <em>' . $current_user->display_name . '</em></li>';
+    foreach ($current_user->roles as $role) {
+      if ($role == get_option('default_role'))
+        continue;
+      echo '<li>You have <em>' .  $role . '</em> privileges</li>';
+    }
+    //$output[] = '<a href="/edit-profile">Edit profile</a></li>';
+    echo '<li><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></li>';
+    echo '</ul>';
     echo $instance['after_content'];
-
     echo $args['after_widget'];
   }
 
@@ -87,4 +91,5 @@ function user_meta_widget_register() {
 }
 
 add_action('widgets_init', 'user_meta_widget_register');
+
 ?>
