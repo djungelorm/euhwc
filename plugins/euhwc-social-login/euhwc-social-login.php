@@ -22,8 +22,8 @@ function euhwc_social_login_button() {
 /**
  * Render login form
  */
-function euhwc_social_login_render_login_form() {
-  $oa_form = oa_social_login_render_login_form ('widget', $instance);
+function euhwc_social_login_render_login_form($type, $instance) {
+  $oa_form = oa_social_login_render_login_form ($type, $instance);
   $button = euhwc_social_login_button();
   $div = '<div class="oneall_social_login">';
   return str_replace($div, $div . $button, $oa_form);
