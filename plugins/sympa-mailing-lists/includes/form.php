@@ -34,8 +34,8 @@ function sympa_mailing_lists_form($lists, $request = null) {
     $id = $list[0];
     $address = $list[2];
     $name = $list[1];
-    $result .= '<input type="checkbox" name="sympa_form_lists[' . $id . ']" value="true" id="lists.' . $id . '"' . (array_key_exists($id, $req_lists) ? ' checked="checked"' : '') . ' />'
-            . '<label for="lists.' . $id . '">' . $name . ' (<i>' . $address . '</i>)</label><br />';
+    $result .= '<input type="checkbox" name="sympa_form_lists[' . $id . ']" value="true" id="lists.' . $id . '"' . (array_key_exists($id, $req_lists) ? ' checked="checked"' : '') . ' /> '
+    . '<label for="lists.' . $id . '">' . $name . ' (<i>' . $address . '</i>)</label><br />';
   }
 
   $result .= '</td></tr>'
