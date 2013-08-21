@@ -2,8 +2,16 @@
 /*
 Plugin Name: EUHWC Social Login
 Description: Customizes OneAll social login links to show an EUHWC button that can be used to log in using the website.
-Version: 1.0
+Version: 1.1
 Author: Alex Collins
+Author URI: http://www.linkedin.com/in/alexanderjamescollins
+License: WTFPL
+*/
+/*
+Copyright © 2013 Alex Collins
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the COPYING file for more details.
 */
 
 /**
@@ -22,8 +30,8 @@ function euhwc_social_login_button() {
 /**
  * Render login form
  */
-function euhwc_social_login_render_login_form() {
-  $oa_form = oa_social_login_render_login_form ('widget', $instance);
+function euhwc_social_login_render_login_form($type, $instance) {
+  $oa_form = oa_social_login_render_login_form ($type, $instance);
   $button = euhwc_social_login_button();
   $div = '<div class="oneall_social_login">';
   return str_replace($div, $div . $button, $oa_form);
@@ -39,6 +47,9 @@ require_once(dirname (__FILE__) . '/includes/comment-form.php');
 /**
  * Register stylesheet
  */
-wp_register_style('euhwc-social-login-button', plugins_url('euhwc-social-login/css/button.css', 'euhwc-social-login'));
+function euhwc_social_login_scripts() {
+  wp_register_style('euhwc-social-login-button', plugins_url('euhwc-social-login/css/button.css', 'euhwc-social-login'));
+}
+add_action('wp_enqueue_scripts', 'euhwc_social_login_scripts');
 
 ?>

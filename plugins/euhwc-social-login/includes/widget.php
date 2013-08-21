@@ -1,9 +1,14 @@
 <?php
+/*
+Copyright © 2013 Alex Collins
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the COPYING file for more details.
+*/
 
 /**
  * Remove the OneAll widget
  */
-
 function euhwc_social_login_unregister_oa_widget() {
   unregister_widget('oa_social_login_widget');
 }
@@ -120,7 +125,6 @@ class euhwc_social_login_widget extends WP_Widget {
 /**
  * Add customised widget
  */
-
 function euhwc_social_login_register_widget() {
   register_widget('euhwc_social_login_widget');
 }

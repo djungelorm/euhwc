@@ -1,9 +1,14 @@
 <?php
+/*
+Copyright © 2013 Alex Collins
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2,
+as published by Sam Hocevar. See the COPYING file for more details.
+*/
 
 /**
  * Remove OneAll comment form filter
  */
-
 function euhwc_social_login_remove_comment_form_defaults()
 {
   remove_filter ('comment_form_defaults', 'oa_social_login_filter_comment_form_defaults');
@@ -14,7 +19,6 @@ add_action('plugins_loaded', 'euhwc_social_login_remove_comment_form_defaults');
 /**
  * Customised comment form filter
  */
-
 function euhwc_social_login_filter_comment_form_defaults ($default_fields)
 {
 	//No need to go further if comments disabled or user loggedin
