@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Sympa Mailing Lists
-Description: Provides a shortcode to display a form for users to register for sympa mailing lists.
-Version: 0.1
+Description: Provides Sympa mailing list management, including a shortcode to display a form for users to subscribe/unsubscribe from mailing lists.
+Version: 1.0
 Author: Alex Collins
 */
 
