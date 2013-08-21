@@ -36,11 +36,11 @@ class user_meta_widget extends WP_Widget {
 
     echo $instance['before_content'];
     echo '<ul>';
-    echo '<li>Logged in as <em>' . $current_user->display_name . '</em></li>';
+    echo '<li>Logged in as <i>' . $current_user->display_name . '</i></li>';
     foreach ($current_user->roles as $role) {
       if ($role == get_option('default_role'))
         continue;
-      echo '<li>You have <em>' .  $role . '</em> privileges</li>';
+      echo '<li>You have <i>' .  $role . '</i> privileges</li>';
     }
     //$output[] = '<a href="/edit-profile">Edit profile</a></li>';
     echo '<li><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></li>';
