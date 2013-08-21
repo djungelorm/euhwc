@@ -19,6 +19,19 @@ function euhwc_widgets_remove() {
 }
 add_action('widgets_init', 'euhwc_widgets_remove', 100);
 
+// Customise feeds
+function euhwc_feed_links() {
+  echo '<link rel="alternate" type="application/rss+xml" title="';
+  echo bloginfo('site_name');
+  echo '" href="';
+  echo bloginfo('rss_url');
+  echo '" />';
+  echo "\n";
+}
+remove_action('wp_head', 'feed_links', 2);
+remove_action('wp_head', 'feed_links_extra', 3);
+add_action('wp_head', 'euhwc_feed_links', 2);
+
 // Register widget areas
 function euhwc_widgets_init() {
   register_sidebar( array(
