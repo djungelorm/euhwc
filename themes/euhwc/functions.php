@@ -1,25 +1,48 @@
 <?php
 
-// Hide the admin bar unless the user can publish posts
+/**
+ * Hide the admin bar unless the user can publish posts
+ */
 function euhwc_hide_admin_bar() {
   return current_user_can('publish_posts');
 }
 add_filter('show_admin_bar', 'euhwc_hide_admin_bar');
 
-// Add [image_cycle] shortcode to display WP Cycle plugin
+/**
+ * Add [image_cycle] shortcode to display WP Cycle plugin
+ */
 function wp_cycle_func($atts) {
   return wp_cycle();
 }
 add_shortcode('image_cycle', 'wp_cycle_func');
 
-// Remove twentythirteen widget areas
+/**
+ * Customise feeds
+ */
+function euhwc_feed_links() {
+  echo '<link rel="alternate" type="application/rss+xml" title="';
+  echo bloginfo('site_name');
+  echo '" href="';
+  echo bloginfo('rss_url');
+  echo '" />';
+  echo "\n";
+}
+remove_action('wp_head', 'feed_links', 2);
+remove_action('wp_head', 'feed_links_extra', 3);
+add_action('wp_head', 'euhwc_feed_links', 2);
+
+/**
+ * Remove twentythirteen widget areas
+ */
 function euhwc_widgets_remove() {
   unregister_sidebar('sidebar-1');
   unregister_sidebar('sidebar-2');
 }
 add_action('widgets_init', 'euhwc_widgets_remove', 100);
 
-// Register widget areas
+/**
+ * Register widget areas
+ */
 function euhwc_widgets_init() {
   register_sidebar( array(
     'name'          => __('Side Widget Area', 'euhwc'),
@@ -84,13 +107,15 @@ function euhwc_widgets_init() {
 add_action('widgets_init', 'euhwc_widgets_init', 101);
 
 function euhwc_remove_twentythirteen_options() {
-	remove_custom_background();
-	remove_custom_image_header();
+	remove_theme_support('custom-background');
+	remove_theme_support('custom-header');
 }
+
 add_action('after_setup_theme', 'euhwc_remove_twentythirteen_options', 100);
 
-// Customise the login page
-
+/**
+ * Customise the login page
+ */
 function euhwc_login_style() {
   echo '<style type="text/css">
     body.login div#login h1 a {

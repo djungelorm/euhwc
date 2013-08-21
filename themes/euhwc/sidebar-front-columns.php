@@ -1,15 +1,14 @@
 <?php
 /**
- * The sidebar containing the front page widget areas.
+ * The front page widget areas, arranged in three columns.
  *
- * If no active widgets in either sidebar, they will be hidden completely.
+ * If there are no active widgets, they will be hidden.
  */
 
 if ( ! is_active_sidebar( 'front-left' ) &&
      ! is_active_sidebar( 'front-middle' ) &&
      ! is_active_sidebar( 'front-right' ) )
   return;
-
 ?>
 
 <div id="secondary" class="sidebar-container front-page-template" role="complementary">

@@ -7,20 +7,7 @@
 
 if ( is_active_sidebar( 'sidebar-floating' ) ) : ?>
 
-  <script type="text/javascript">
-    jQuery(document).ready(function($) {
-      $('#sidebar-floating-hide')
-        .click(function() {
-          $('#sidebar-floating-visible').hide(200);
-          $('#sidebar-floating-hidden').show();
-        });
-      $('#sidebar-floating-show')
-        .click(function() {
-          $('#sidebar-floating-hidden').hide();
-          $('#sidebar-floating-visible').show(200);
-        });
-    });
-  </script>
+  <?php  wp_enqueue_script('sidebar-floating', get_stylesheet_directory_uri().'/js/sidebar-floating.js'); ?>
 
   <div id="sidebar-floating-visible" class="sidebar-container sidebar-floating" role="complementary">
     <div class="sidebar-inner">

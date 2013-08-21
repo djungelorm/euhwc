@@ -1,8 +1,8 @@
 <?php
 /**
- * The sidebar containing the main front page widget area.
+ * The main front page widget area, that appears in the top right of the fron page.
  *
- * If no active widgets, they will be hidden completely.
+ * If there are no active widgets, they will be hidden.
  */
 
 if ( is_active_sidebar( 'front-main' ) ) : ?>

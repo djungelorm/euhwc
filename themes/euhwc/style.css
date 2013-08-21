@@ -3,7 +3,10 @@ Theme Name: EUHWC
 Description: Edinburgh University Hill Walking Club website theme.
 Template: twentythirteen
 Author: Alex Collins
-Version: 1.4
+Author URI: http://uk.linkedin.com/in/alexanderjamescollins
+Version: 1.5
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 @import url(../twentythirteen/style.css);
@@ -92,7 +95,19 @@ h6 {
 
 /* Links --------------------------------------------------------------------- */
 
-a, a:visited, a:active, a:hover {
+a {
+  color: #00669a;
+}
+
+a:visited {
+  color: #00669a;
+}
+
+a:active {
+  color: #00669a;
+}
+
+a:hover {
   color: #00669a;
 }
 
