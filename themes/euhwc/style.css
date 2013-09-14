@@ -439,13 +439,13 @@ td {
   max-width: 1080px;
   min-height: 45px;
   position: relative;
-  white-space: nowrap;
   padding: 12px 10px;
 }
 
 .site-header .home-link {
   display: inline-block;
   padding: 0;
+  white-space: nowrap;
 }
 
 .site-header .site-logo {
@@ -457,6 +457,12 @@ td {
   display: inline-block;
   vertical-align: middle;
   white-space: normal;
+}
+
+@media (max-width: 643px) {
+  .site-header .home-link {
+    width: 200px;
+  }
 }
 
 .eu-link {
