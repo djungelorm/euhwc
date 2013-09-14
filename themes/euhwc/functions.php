@@ -127,4 +127,32 @@ function euhwc_login_style() {
 
 add_action ('login_enqueue_scripts', 'euhwc_login_style');
 
+// Redirect private pages to 301 when access is denied
+function intercept_private_page($posts, &$wp_query) {
+  // remove filter for subsequent post querying
+  remove_filter('the_posts', 'intercept_private_page', 5, 2);
+
+  // Stop if the user can read private pages
+  if (current_user_can('read_private_pages'))
+    return $posts;
+
+  // Stop if no post was queried
+  if (!($wp_query->is_page && empty($posts)))
+    return $posts;
+
+  // Check if the page is private
+  if (!empty($wp_query->query['page_id']))
+    $page = get_page($wp_query->query['page_id']);
+  else
+    $page = get_page_by_path($wp_query->query['pagename']);
+
+  if ($page && $page->post_status == 'private') {
+    wp_redirect(wp_login_url(get_permalink($page->ID)), 301);
+    exit;
+  }
+
+  return $posts;
+}
+add_filter('the_posts', 'intercept_private_page', 5, 2);
+
 ?>
