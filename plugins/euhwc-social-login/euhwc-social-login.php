@@ -31,7 +31,7 @@ function euhwc_social_login_button() {
  * Render login form
  */
 function euhwc_social_login_render_login_form($source, $args = array ()) {
-  $oa_form = oa_social_login_render_login_form ($source, $instance);
+  $oa_form = oa_social_login_render_login_form ($source, $args);
   $button = euhwc_social_login_button();
   $div = '<div class="oneall_social_login_providers';
   return str_replace($div, $button . $div, $oa_form);
