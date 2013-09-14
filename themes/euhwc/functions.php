@@ -148,7 +148,7 @@ function intercept_private_page($posts, &$wp_query) {
 
   // Redirect to login if the page is private and the user is not logged int
   if (!is_user_logged_in() && $page && $page->post_status == 'private') {
-    wp_redirect(wp_login_url(get_permalink($page->ID)), 301);
+    wp_redirect(wp_login_url(get_permalink($page->ID)), 302);
     exit;
   }
 
