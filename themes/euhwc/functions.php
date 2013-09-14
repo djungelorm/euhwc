@@ -127,7 +127,7 @@ function euhwc_login_style() {
 
 add_action ('login_enqueue_scripts', 'euhwc_login_style');
 
-// Redirect private pages to 301 when access is denied
+// Redirect private pages to login page if the user is not logged in
 function intercept_private_page($posts, &$wp_query) {
   // remove filter for subsequent post querying
   remove_filter('the_posts', 'intercept_private_page', 5, 2);
@@ -146,7 +146,8 @@ function intercept_private_page($posts, &$wp_query) {
   else
     $page = get_page_by_path($wp_query->query['pagename']);
 
-  if ($page && $page->post_status == 'private') {
+  // Redirect to login if the page is private and the user is not logged int
+  if (!is_user_logged_in() && $page && $page->post_status == 'private') {
     wp_redirect(wp_login_url(get_permalink($page->ID)), 301);
     exit;
   }
