@@ -44,7 +44,10 @@ EOD;
   $lists = implode(', ', $request->lists);
 
   $url = parse_url(sympa_mailing_lists_current_page_url());
-  parse_str($url['query'], $query);
+  if (isset($url['query']))
+    parse_str($url['query'], $query);
+  else
+    $query = array();
   $query['ticket'] = $ticket;
   $link = $url['scheme'].'://'.$url['host'].$url['path'] . '?' . http_build_query($query);
 
