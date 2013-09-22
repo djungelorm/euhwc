@@ -11,7 +11,7 @@ as published by Sam Hocevar. See the COPYING file for more details.
  */
 function sympa_mailing_lists_current_page_url() {
   $url = 'http';
-  if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+  if (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on')
     $url .= 's';
   $url .= '://' . $_SERVER['SERVER_NAME'];
   if ($_SERVER['SERVER_PORT'] != '80')
