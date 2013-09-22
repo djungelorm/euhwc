@@ -52,13 +52,17 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
     return sympa_mailing_lists_form($lists);
 
   if (isset($_POST['sympa_form_submit'])) {
+    // Check post data
+    if (!(isset($_POST['sympa_form_email']) &&
+          isset($_POST['sympa_form_command']) &&
+          isset($_POST['sympa_form_lists'])) &&
+          is_array($_POST['sympa_form_lists']))
+      return '<p class="error">Invalid request.</p>';
+
     // Decode post data
     $email = $_POST['sympa_form_email'];
     $command = $_POST['sympa_form_command'];
-    if (is_array($_POST['sympa_form_lists']))
-      $list_ids = array_keys($_POST['sympa_form_lists']);
-    else
-      $list_ids = array();
+    $list_ids = array_keys($_POST['sympa_form_lists']);
 
     // Construct request object
     $req_lists = array();
