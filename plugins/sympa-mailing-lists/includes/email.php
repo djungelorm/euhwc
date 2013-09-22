@@ -44,7 +44,7 @@ EOD;
   $lists = implode(', ', $request->lists);
 
   $url = parse_url(sympa_mailing_lists_current_page_url());
-  if (isset($url['query']))
+  if (array_key_exists('query', $url))
     parse_str($url['query'], $query);
   else
     $query = array();
