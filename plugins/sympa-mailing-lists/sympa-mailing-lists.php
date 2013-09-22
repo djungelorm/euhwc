@@ -71,19 +71,20 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
     }
     $request = new SympaMailingListsRequest($email, $command, $req_lists);
 
-    if ($request->valid()) {
-      // Send confirmation email
-      $ticket = wp_create_nonce('sympa_form' . $email . current_time('timestamp') );
-      if (sympa_mailing_lists_send_confirmation_mail($request, $ticket)) {
-        set_transient('sympa_form_' . $ticket, $request, $timeout);
-        return '<p class="success">An email has been sent to your address with a confirmation link.</p>';
-      } else {
-        return '<p class="error">Failed to send confirmation email!</p>';
-      }
-    } else {
-      // Request was not valid
-      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>' . sympa_mailing_lists_form($lists, $request);
+    // Validate request
+    if (!$request->valid()) {
+      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>' .
+             sympa_mailing_lists_form($lists, $request);
     }
+
+    // Send confirmation email
+    $ticket = wp_create_nonce('sympa_form' . $email . current_time('timestamp'));
+    if (!sympa_mailing_lists_send_confirmation_mail($request, $ticket)) {
+      return '<p class="error">Failed to send confirmation email!</p>';
+    }
+
+    set_transient('sympa_form_' . $ticket, $request, $timeout);
+    return '<p class="success">An email has been sent to your address with a confirmation link.</p>';
   }
 
   if ($ticket != '') {
