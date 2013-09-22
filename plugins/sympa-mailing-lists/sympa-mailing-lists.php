@@ -23,6 +23,9 @@ require_once(dirname (__FILE__) . '/includes/form.php');
  */
 function sympa_mailing_lists_query_vars($public_query_vars) {
   $public_query_vars[] = 'ticket';
+  $public_query_vars[] = 'action';
+  $public_query_vars[] = 'email';
+  $public_query_vars[] = 'list';
   return $public_query_vars;
 }
 add_filter('query_vars', 'sympa_mailing_lists_query_vars');
@@ -48,8 +51,20 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
 
   $ticket = get_query_var('ticket');
 
-  if ($ticket == '' && !array_key_exists('sympa_form_submit', $_POST))
-    return sympa_mailing_lists_form($lists);
+  if ($ticket == '' && !array_key_exists('sympa_form_submit', $_POST)) {
+    $email = get_query_var('email');
+    $action = get_query_var('action');
+    $list = get_query_var('list');
+    $req_lists = array();
+    foreach ($lists_dict as $id => $entry) {
+      if ($entry[1] == $list) {
+        $req_lists[$id] = $lists_dict[$id][1];
+        break;
+      }
+    }
+    $request = new SympaMailingListsRequest($email, $action, $req_lists);
+    return sympa_mailing_lists_form($lists, $request);
+  }
 
   if (array_key_exists('sympa_form_submit', $_POST)) {
     // Check post data
