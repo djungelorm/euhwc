@@ -176,20 +176,17 @@ function postie_warnings() {
         add_action('admin_notices', 'postie_mbstring_warning');
     }
 
-    if (!function_exists('get_user_by')) {
-        include ABSPATH . 'wp-includes/pluggable.php';
-    }
-    $adminuser = get_user_by('login', $config['admin_username']);
-    if ($adminuser === false) {
-
-        function postie_adminuser_warning() {
+    function postie_adminuser_warning() {
+        $config = config_Read();
+        $adminuser = get_user_by('login', $config['admin_username']);
+        if ($adminuser === false) {
             echo "<div id='postie-mbstring-warning' class='error'><p><strong>";
             echo __('Warning: the Admin username is not a valid WordPress login. Postie may reject emails if this is not corrected.', 'postie');
             echo "</strong></p></div>";
         }
-
-        add_action('admin_notices', 'postie_adminuser_warning');
     }
+
+    add_action('admin_notices', 'postie_adminuser_warning');
 }
 
 function disable_kses_content() {
