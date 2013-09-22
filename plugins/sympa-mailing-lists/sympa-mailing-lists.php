@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sympa Mailing Lists
 Description: Provides Sympa mailing list management, including a shortcode to display a form for users to subscribe/unsubscribe from mailing lists.
-Version: 1.0
+Version: 1.1
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -23,6 +23,9 @@ require_once(dirname (__FILE__) . '/includes/form.php');
  */
 function sympa_mailing_lists_query_vars($public_query_vars) {
   $public_query_vars[] = 'ticket';
+  $public_query_vars[] = 'action';
+  $public_query_vars[] = 'email';
+  $public_query_vars[] = 'list';
   return $public_query_vars;
 }
 add_filter('query_vars', 'sympa_mailing_lists_query_vars');
@@ -48,17 +51,34 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
 
   $ticket = get_query_var('ticket');
 
-  if ($ticket == '' && !isset($_POST['sympa_form_submit']))
-    return sympa_mailing_lists_form($lists);
+  if ($ticket == '' && !array_key_exists('sympa_form_submit', $_POST)) {
+    $email = get_query_var('email');
+    $action = get_query_var('action');
+    $list = get_query_var('list');
+    $req_lists = array();
+    foreach ($lists_dict as $id => $entry) {
+      if ($entry[1] == $list) {
+        $req_lists[$id] = $lists_dict[$id][1];
+        break;
+      }
+    }
+    $request = new SympaMailingListsRequest($email, $action, $req_lists);
+    return sympa_mailing_lists_form($lists, $request);
+  }
 
-  if (isset($_POST['sympa_form_submit'])) {
+  if (array_key_exists('sympa_form_submit', $_POST)) {
+    // Check post data
+    if (!(array_key_exists('sympa_form_email', $_POST) &&
+          array_key_exists('sympa_form_command', $_POST) &&
+          array_key_exists('sympa_form_lists', $_POST) &&
+          is_array($_POST['sympa_form_lists']))) {
+      return '<p class="error">Invalid request.</p>';
+    }
+
     // Decode post data
     $email = $_POST['sympa_form_email'];
     $command = $_POST['sympa_form_command'];
-    if (is_array($_POST['sympa_form_lists']))
-      $list_ids = array_keys($_POST['sympa_form_lists']);
-    else
-      $list_ids = array();
+    $list_ids = array_keys($_POST['sympa_form_lists']);
 
     // Construct request object
     $req_lists = array();
@@ -67,19 +87,20 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
     }
     $request = new SympaMailingListsRequest($email, $command, $req_lists);
 
-    if ($request->valid()) {
-      // Send confirmation email
-      $ticket = wp_create_nonce('sympa_form' . $email . current_time('timestamp') );
-      if (sympa_mailing_lists_send_confirmation_mail($request, $ticket)) {
-        set_transient('sympa_form_' . $ticket, $request, $timeout);
-        return '<p class="success">An email has been sent to your address with a confirmation link.</p>';
-      } else {
-        return '<p class="error">Failed to send confirmation email!</p>';
-      }
-    } else {
-      // Request was not valid
-      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>' . sympa_mailing_lists_form($lists, $request);
+    // Validate request
+    if (!$request->valid()) {
+      return '<p class="error">The details you entered are not valid. Please check them and try again.</p>' .
+             sympa_mailing_lists_form($lists, $request);
     }
+
+    // Send confirmation email
+    $ticket = wp_create_nonce('sympa_form' . $email . current_time('timestamp'));
+    if (!sympa_mailing_lists_send_confirmation_mail($request, $ticket)) {
+      return '<p class="error">Failed to send confirmation email!</p>';
+    }
+
+    set_transient('sympa_form_' . $ticket, $request, $timeout);
+    return '<p class="success">An email has been sent to your address with a confirmation link.</p>';
   }
 
   if ($ticket != '') {

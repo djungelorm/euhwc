@@ -11,6 +11,8 @@ class SympaMailingListsRequest {
 
   function __construct($email, $command, $lists) {
     $this->email = $email;
+    if ($command != 'unsubscribe')
+      $command = 'subscribe';
     $this->command = $command;
     $this->lists = $lists;
     if ($this->lists == null)
