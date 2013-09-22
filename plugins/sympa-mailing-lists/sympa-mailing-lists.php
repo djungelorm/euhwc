@@ -48,16 +48,17 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
 
   $ticket = get_query_var('ticket');
 
-  if ($ticket == '' && !isset($_POST['sympa_form_submit']))
+  if ($ticket == '' && !array_key_exists('sympa_form_submit', $_POST))
     return sympa_mailing_lists_form($lists);
 
-  if (isset($_POST['sympa_form_submit'])) {
+  if (array_key_exists('sympa_form_submit', $_POST)) {
     // Check post data
-    if (!(isset($_POST['sympa_form_email']) &&
-          isset($_POST['sympa_form_command']) &&
-          isset($_POST['sympa_form_lists'])) &&
-          is_array($_POST['sympa_form_lists']))
+    if (!(array_key_exists('sympa_form_email', $_POST) &&
+          array_key_exists('sympa_form_command', $_POST) &&
+          array_key_exists('sympa_form_lists', $_POST) &&
+          is_array($_POST['sympa_form_lists']))) {
       return '<p class="error">Invalid request.</p>';
+    }
 
     // Decode post data
     $email = $_POST['sympa_form_email'];
