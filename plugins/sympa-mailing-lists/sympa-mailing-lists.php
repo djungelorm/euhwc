@@ -62,6 +62,8 @@ function sympa_mailing_lists_shortcode( $atts, $content = null ) {
         break;
       }
     }
+    if (empty($req_lists))
+      $req_lists = array($lists[0][0] => $lists[0][2]);
     $request = new SympaMailingListsRequest($email, $action, $req_lists);
     return sympa_mailing_lists_form($lists, $request);
   }

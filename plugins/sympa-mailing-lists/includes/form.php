@@ -17,7 +17,7 @@ function sympa_mailing_lists_form($lists, $request = null) {
 
   $email = isset($request) ? $request->email : $user_email;
   $command = isset($request) ? $request->command : 'subscribe';
-  $req_lists = isset($request) ? $request->lists : array($lists[0][0] => $lists[0][2]);
+  $req_lists = isset($request) ? $request->lists : array();
 
   $result .= '<form method="post" action="">'
   . '<table>'
