@@ -11,7 +11,7 @@ if ( is_active_sidebar( 'sidebar-floating' ) ) : ?>
 
   <div id="sidebar-floating-visible" class="sidebar-container sidebar-floating" role="complementary">
     <div class="sidebar-inner">
-      <a href="#" alt="hide" title="Hide" id="sidebar-floating-hide" class="sidebar-floating-button genericon genericon-collapse"></a>
+      <a href="#" title="Hide" id="sidebar-floating-hide" class="sidebar-floating-button genericon genericon-collapse"></a>
       <div class="widget-area">
         <?php dynamic_sidebar( 'sidebar-floating' ); ?>
       </div>
@@ -19,7 +19,7 @@ if ( is_active_sidebar( 'sidebar-floating' ) ) : ?>
   </div>
 
   <div class="sidebar-floating" id="sidebar-floating-hidden">
-    <a href="#" alt="show" title="Show" id="sidebar-floating-show" class="sidebar-floating-button genericon genericon-expand"></a>
+    <a href="#" title="Show" id="sidebar-floating-show" class="sidebar-floating-button genericon genericon-expand"></a>
   </div>
 
 <?php endif; ?>
