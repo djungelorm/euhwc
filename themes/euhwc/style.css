@@ -282,6 +282,15 @@ ul.nav-menu ul a:hover,
   color: #005784;
 }
 
+/* Entry Content */
+
+/* Disable hyphenation of words */
+.entry-content {
+  word-wrap: normal;
+  word-break: keep-all;
+  -moz-hyphens: none;
+}
+
 /* Comments ------------------------------------------------------------------ */
 
 .comment-form .required {
