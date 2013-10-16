@@ -470,7 +470,7 @@ td {
 
 @media (max-width: 643px) {
   .site-header .home-link {
-    width: 200px;
+    width: 75%;
   }
 }
 
