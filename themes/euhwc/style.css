@@ -564,6 +564,13 @@ td {
   }
 }
 
+/* HACK to make sure main content area is as high as the main page widgets (rotator) */
+@media screen and (min-width: 1069px) {
+  #primary.content-area {
+    min-height: 290px; /* 250 + 20 + 20 */
+  }
+}
+
 /* Widget columns */
 #secondary.sidebar-container.front-page-template {
   position: relative;
