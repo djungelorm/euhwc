@@ -4,7 +4,7 @@ Description: Edinburgh University Hill Walking Club website theme.
 Template: twentythirteen
 Author: Alex Collins
 Author URI: http://uk.linkedin.com/in/alexanderjamescollins
-Version: 1.7
+Version: 1.8
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -531,79 +531,139 @@ td {
 
 /* Front page template ------------------------------------------------------- */
 
-/* Set default width for page content */
-.entry-content.front-page-template {
-	max-width: 1040px;
-	padding: 0 376px 0 60px;
+/* Left column */
+#primary.front-page-template .site-content {
+  max-width: 1050px;
+  padding: 0px 20px;
+  margin: 0px auto;
+  width: 100%;
+  padding-right: 520px;
 }
 
-/* Make the blurb narrower by 150px and the front-main widgets wider by 150px on large screens*/
-@media screen and (min-width: 1069px) {
-  .entry-content.front-page-template {
-    padding-right: 466px; /* 376px + 150px - 60px fudge factor*/
-  }
-
-  #tertiary.sidebar-container.front-page-template .widget-area {
-    width: 450px; /* 300px + 200px */
-    margin-top: -20px; /* HACK: undo previous hack to stop overlap with archive title, and shift up slighly */
-  }
+#primary.front-page-template .widget-area {
+  float: none;
+  width: 100%;
 }
 
-/* Hide main widget area on small screens */
-@media screen and (max-width: 1069px) {
-  #tertiary.sidebar-container.front-page-template .widget-area {
+#primary.front-page-template .widget {
+  border-top: 1px solid #ccc;
+}
+
+#primary.front-page-template article {
+  padding: 10px;
+  margin: 0px;
+}
+
+#primary.front-page-template article p:last-child {
+  margin-bottom: 0px;
+}
+
+#primary.front-page-template .entry-content {
+  padding: 0px;
+  max-width: none;
+}
+
+/* Right column */
+
+#tertiary.front-page-template>.sidebar-inner>.widget-area {
+  float: right;
+  width: 520px;
+}
+
+/* Image cycle above middle and right columns */
+
+#tertiary.front-page-template .widget-area.image-cycle {
+  width: 520px;
+  margin-top: 0px;
+}
+
+#tertiary.front-page-template .widget-area.image-cycle .widget {
+  margin-bottom: 0px;
+}
+
+#tertiary.front-page-template.sidebar-container {
+  top: 0px;
+  height: 0px;
+  position: absolute;
+  max-width: none;
+  width: 100%;
+}
+
+/* Middle and right columns */
+#tertiary.front-page-template .widget-area {
+  margin-top: 0px;
+  width: 250px;
+  margin-right: 0px;
+  float: right;
+}
+
+/* Media queries */
+
+@media (max-width: 1000px) {
+  /* Hide the image rotator */
+  .front-page-template .widget-area.image-cycle {
     display: none;
   }
 }
 
-/* Resize the blurb to full width when front-main widgets are hidden */
-@media screen and (max-width: 1069px) {
-  .entry-content.front-page-template {
-    max-width: 1069px;
-    padding: 0px 60px;
-  }
-}
-
-/* HACK to make sure main content area is as high as the main page widgets (rotator) */
-@media screen and (min-width: 1069px) {
-  #primary.content-area {
-    min-height: 290px; /* 250 + 20 + 20 */
-  }
-}
-
-/* Widget columns */
-#secondary.sidebar-container.front-page-template {
-  position: relative;
-  top: auto;
-  height: auto;
-  z-index: auto;
-  max-width: 1040px;
-  margin: 0px auto;
-  padding: 0px 60px;
-}
-
-#secondary.sidebar-container.front-page-template .widget-area {
-  float: left;
-  width: 32%;
-  margin-top: 0px; /* HACK: undo previous hack to stop overlap with archive title */
-}
-
-/* Undo margin increase on widget areas for small screens */
-@media (max-width: 1069px) {
-  #secondary.sidebar-container.front-page-template .widget-area {
-    margin-right: 0;
-  }
-}
-
-/* List all column widgets one above the above on small screens */
-@media (max-width: 643px) {
-  #secondary.sidebar-container.front-page-template {
-    padding: 0px 10px;
-  }
-
-  #secondary.sidebar-container.front-page-template .widget-area {
+@media (max-width: 850px) {
+  #tertiary.front-page-template .widget-area .widget-area {
     float: none;
+    position: static;
+  }
+
+  #tertiary.front-page-template>.sidebar-inner>.widget-area {
+    width: 270px;
+    margin-right: 0px;
+  }
+
+  #primary.front-page-template .site-content {
+    max-width: 1050px;
+    padding: 0px 20px;
+    margin: 0px auto;
     width: 100%;
+    padding-right: 270px;
+  }
+
+  #tertiary.front-page-template.sidebar-container {
+    height: 0px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 1;
+    max-width: none;
+  }
+}
+
+/* TODO: redo the next section, changes to the above media query have screwed it up */
+@media (max-width: 600px) {
+  #primary.front-page-template .site-content {
+    max-width: none;
+    padding: 0px 20px;
+  }
+
+  #primary.front-page-template .entry-content {
+    max-width: none;
+  }
+
+  #tertiary.front-page-template.sidebar-container {
+    position: static;
+    height: auto;
+    top: auto;
+    z-index: auto;
+    max-width: none;
+  }
+
+  #tertiary.front-page-template .widget-area {
+    float: none;
+  }
+
+  #tertiary.front-page-template>.sidebar-inner>.widget-area {
+    float: none;
+  }
+
+  #tertiary.front-page-template .sidebar-inner {
+    padding: 0px 20px;
   }
 }
 
@@ -680,10 +740,8 @@ td {
 
 /* Rotator ------------------------------------------------------------------- */
 #rotator {
-  /*width: 100%;
-  height: auto;*/
-  width: 420px;
-  height: 250px;
+  width: 580px;
+  height: 300px;
 }
 
 #rotator img {
@@ -716,7 +774,7 @@ td {
 }
 
 .error404 .page-wrapper {
-	background-color: transparent;
+  background-color: transparent;
 }
 
 /* Utility classes ----------------------------------------------------------- */
@@ -752,4 +810,135 @@ td {
 /* Fix a, a:hover not overriding twentythirteen theme */
 .comment-respond a, .comment-respond a:hover {
   color: #00669a;
+}
+
+/* Genericons ---------------------------------------------------------------- */
+
+.icon-time {
+  color: #666;
+}
+
+.icon-time:before {
+  content: '\f303';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-location {
+  color: #666;
+}
+
+.icon-location:before {
+  content: '\f417';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-post {
+  color: #666;
+}
+
+.icon-post:before {
+  padding-right: 2px;
+  content: '\f100';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-email {
+  color: #666;
+}
+
+.icon-email:before {
+  padding-right: 2px;
+  content: '\f410';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-user:before {
+  color: #666;
+  content: '\f304';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-facebook:before {
+  padding-right: 2px;
+  content: '\f203';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Widget styling ------------------------------------------------------------ */
+
+/* User meta widget */
+
+.widget_user_meta_widget li {
+  padding: 2px 0px;
+}
+
+/* Custom events widget */
+
+.widget_euhwc_events_widget .event-title {
+  font-size: 130%;
+}
+
+.widget_euhwc_events_widget li {
+  clear: both;
+}
+
+/* EUHWC recent posts widget */
+
+.widget_euhwc_recent_posts_widget li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+  clear: right;
+}
+
+.widget_euhwc_recent_posts_widget .icon-time {
+  float: right;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+/* Events manager widget */
+
+.widget_em_widget li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+}
+
+.widget_em_widget li:before {
+  color: #666;
+  padding-right: 2px;
+  content: '\f100';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Recent comments widget */
+
+.widget_recent_comments li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+}
+
+.widget_recent_comments li:before {
+  color: #666;
+  padding-right: 2px;
+  content: '\f300';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
 }
