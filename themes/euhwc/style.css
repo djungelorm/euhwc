@@ -817,3 +817,70 @@ td {
   display: inline-block;
   vertical-align: middle;
 }
+
+/* Widget styling ------------------------------------------------------------ */
+
+/* User meta widget */
+
+.widget_user_meta_widget li {
+  padding: 2px 0px;
+}
+
+/* Custom events widget */
+
+.widget_euhwc_events_widget .event-title {
+  font-size: 130%;
+}
+
+.widget_euhwc_events_widget li {
+  clear: both;
+}
+
+/* EUHWC recent posts widget */
+
+.widget_euhwc_recent_posts_widget li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+  clear: right;
+}
+
+.widget_euhwc_recent_posts_widget .icon-time {
+  float: right;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+/* Events manager widget */
+
+.widget_em_widget li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+}
+
+.widget_em_widget li:before {
+  color: #666;
+  padding-right: 2px;
+  content: '\f100';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Recent comments widget */
+
+.widget_recent_comments li {
+  padding: 2px 0px;
+  text-indent: -9px;
+  padding-left: 20px;
+}
+
+.widget_recent_comments li:before {
+  color: #666;
+  padding-right: 2px;
+  content: '\f300';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
