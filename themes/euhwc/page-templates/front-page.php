@@ -5,39 +5,33 @@
 
 get_header(); ?>
 
-	<div id="primary" class="content-area">
-		<div id="content" class="site-content" role="main">
+  <div id="primary" class="content-area front-page-template">
+    <div id="content" class="site-content" role="main">
 
-			<?php /* The loop */ ?>
-			<?php while ( have_posts() ) : the_post(); ?>
+      <?php get_sidebar( 'front-left' ); ?>
 
-				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<header class="entry-header">
-						<?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
-						<div class="entry-thumbnail">
-							<?php the_post_thumbnail(); ?>
-						</div>
-						<?php endif; ?>
+    </div><!-- #content -->
+  </div><!-- #primary -->
 
-						<h1 class="entry-title"><?php the_title(); ?></h1>
-					</header><!-- .entry-header -->
+  <div id="tertiary" class="sidebar-container front-page-template" role="complementary">
+    <div class="sidebar-inner">
+      <div class="widget-area">
 
-					<div class="entry-content front-page-template">
-						<?php the_content(); ?>
-						<?php wp_link_pages( array( 'before' => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentythirteen' ) . '</span>', 'after' => '</div>', 'link_before' => '<span>', 'link_after' => '</span>' ) ); ?>
-					</div><!-- .entry-content -->
+        <div class="widget-area image-cycle">
+          <aside id="image-cycle-1" class="widget widget_text">
+            <?php echo do_shortcode('[image_cycle]'); ?>
+          </aside>
+        </div>
 
-					<footer class="entry-meta">
-						<?php edit_post_link( __( 'Edit', 'twentythirteen' ), '<span class="edit-link">', '</span>' ); ?>
-					</footer><!-- .entry-meta -->
-				</article><!-- #post -->
+        <div class="clearboth"></div>
 
-				<?php comments_template(); ?>
-			<?php endwhile; ?>
+        <?php get_sidebar( 'front-right' ); ?>
+        <?php get_sidebar( 'front-middle' ); ?>
 
-		</div><!-- #content -->
-	</div><!-- #primary -->
+        <div class="clearboth"></div>
 
-<?php get_sidebar( 'front-main' ); ?>
-<?php get_sidebar( 'front-columns' ); ?>
+      </div>
+    </div>
+  </div><!-- #primary -->
+
 <?php get_footer(); ?>
