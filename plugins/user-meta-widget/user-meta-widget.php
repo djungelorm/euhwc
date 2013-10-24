@@ -2,7 +2,7 @@
 /*
 Plugin Name: User Meta Widget
 Description: A widget that provides log out and edit profile links.
-Version: 1.2
+Version: 1.3
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -36,7 +36,7 @@ class user_meta_widget extends WP_Widget {
 
     echo $instance['before_content'];
     echo '<ul>';
-    echo '<li>Logged in as <i>' . $current_user->display_name . '</i></li>';
+    echo '<li><span class="icon-user"></span>Logged in as <i>' . $current_user->display_name . '</i></li>';
     foreach ($current_user->roles as $role) {
       if ($role == get_option('default_role'))
         continue;
