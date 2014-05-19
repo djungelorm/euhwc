@@ -156,4 +156,34 @@ function intercept_private_page($posts, &$wp_query) {
 }
 add_filter('the_posts', 'intercept_private_page', 5, 2);
 
+// Redirect pages that require login if the user is not logged in
+function intercept_protected_page($posts, &$wp_query) {
+  // remove filter for subsequent post querying
+  remove_filter('the_posts', 'intercept_protected_page', 5, 2);
+
+  // Stop if the user can read private pages
+  if (current_user_can('read_private_pages'))
+    return $posts;
+
+  // Stop if no post was queried
+  if (!($wp_query->is_page && empty($posts)))
+    return $posts;
+
+  // Check if the page is private
+  if (!empty($wp_query->query['page_id']))
+    $page = get_page($wp_query->query['page_id']);
+  else
+    $page = get_page_by_path($wp_query->query['pagename']);
+
+  // Redirect to login if the page is private and the user is not logged int
+  if (!is_user_logged_in() && $page && $page->post_status == 'private') {
+    wp_redirect(wp_login_url(get_permalink($page->ID)), 302);
+    exit;
+  }
+
+  return $posts;
+}
+add_filter('the_posts', 'intercept_protected_page', 5, 2);
+
+
 ?>
