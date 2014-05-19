@@ -2,7 +2,7 @@
 /*
 Plugin Name: Sympa Mailing Lists
 Description: Provides Sympa mailing list management, including a shortcode to display a form for users to subscribe/unsubscribe from mailing lists.
-Version: 1.1
+Version: 1.2
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
