@@ -894,6 +894,10 @@ td {
   clear: both;
 }
 
+.widget_euhwc_events_widget p {
+  margin: 0px;
+}
+
 /* EUHWC recent posts widget */
 
 .widget_euhwc_recent_posts_widget li {
@@ -907,6 +911,10 @@ td {
   float: right;
   white-space: nowrap;
   min-width: 100px;
+}
+
+.widget_euhwc_recent_posts_widget p {
+  margin: 0px;
 }
 
 /* Events manager widget */
