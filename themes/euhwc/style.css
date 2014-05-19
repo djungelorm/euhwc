@@ -793,8 +793,8 @@ td {
 
 .sidebar .content-area .oneall_social_login {
   max-width: 1040px;
-  padding-left: 60px;
-  padding-right: 376px;
+  /*padding-left: 60px;*/
+  /*padding-right: 376px;*/
   width: 100%;
   margin-left: auto;
   margin-right: auto;
