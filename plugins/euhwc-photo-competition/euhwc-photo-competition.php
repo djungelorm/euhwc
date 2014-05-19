@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: EUHWC Photo Competition
-Description: EUHWC Photo Competition
+Description: Provides functionality to run a photo competition, with support for multiple categories.
 Version: 1.0
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
@@ -38,6 +38,9 @@ define('PHOTOCOMP_TYPE_WHITELIST', serialize(array(
 
 add_action('init', 'euhwc_photo_competition_init');
 
+/**
+ * Create contents type for photo competition entries
+ */
 function euhwc_photo_competition_init() {
   $args = array(
       'labels' => array(
@@ -69,83 +72,99 @@ function euhwc_photo_competition_init() {
   register_post_type('euhwc_photocom_entry', $args);
 }
 
+/* Set up shortcodes */
 add_shortcode('euhwc_photo_competition_submission', 'euhwc_photo_competition_submission_shortcode');
-add_shortcode('euhwc_photo_competition_entries', 'euhwc_photo_competition_entries_shortcode');
 add_shortcode('euhwc_photo_competition_voting', 'euhwc_photo_competition_voting_shortcode');
 add_shortcode('euhwc_photo_competition_results', 'euhwc_photo_competition_results_shortcode');
+add_shortcode('euhwc_photo_competition_entries', 'euhwc_photo_competition_entries_shortcode');
 
+/* Set up URL query arguments */
 function euhwc_photo_competition_query_vars( $vars ){
+  // category argument for the euhwc_photo_competition_results shortcode
   $vars[] = 'category';
   return $vars;
 }
 add_filter('query_vars', 'euhwc_photo_competition_query_vars');
 
+/**
+ * Returns an associative array of all the photo competition entries
+ */
 function euhwc_photo_competition_get_all_entries($categories) {
-  // Get user ids of everyone who has submitted a photo
+  // Get all entries
   $args = array(
     'post_type' => 'euhwc_photocom_entry',
     'post_status' => 'publish',
     'nopaging' => TRUE
   );
   $photos = new WP_Query($args);
+
+  // Extract an array of all users who have submitted an entry
   $users = array();
   foreach ($photos->posts as $photo) {
     array_push($users, $photo->post_author);
   }
   $users = array_unique($users);
 
-  // Get the entries for all users
+  // Get the entries for each user
   $data = array();
-  foreach ($users as $user_id) {
+  foreach ($users as $user_id)
     $data[$user_id] = euhwc_photo_competition_get_entries($user_id, $categories);
-  }
+
   return $data;
 }
 
+/**
+ * Returns an associative array of all the photo competition entries for a given user
+ */
 function euhwc_photo_competition_get_entries($user_id, $categories) {
+  // Initialise empty result array
   $data = array();
   foreach ($categories as $key => $value) {
     $data[$key] = $value;
     $data[$key]['images'] = array(FALSE,FALSE,FALSE);
   }
 
+  // Get all entries for the given user
   $args = array(
     'author' => $user_id,
     'post_type' => 'euhwc_photocom_entry',
     'post_status' => 'publish',
     'nopaging' => TRUE
   );
-
   $photos = new WP_Query($args);
 
+  // Return an empty result if there are no entries
   if (!$photos->post_count)
     return $data;
 
+  // Construct the result array
   foreach ($photos->posts as $photo) {
     $category = get_post_meta($photo->ID, 'category_id', true);
     $id = get_post_meta($photo->ID, 'image_id', true);
     $data[$category]['images'][$id]['post_id'] = $photo->ID;
+    $data[$category]['images'][$id]['name'] = get_the_author_meta('first_name', $photo->post_author) . ' ' . get_the_author_meta('last_name', $photo->post_author);
+    $data[$category]['images'][$id]['votes'] = get_post_meta($photo->ID, 'photo_competition_vote', false);
+    // TODO: abstract the AWS S3 storage
     $data[$category]['images'][$id]['full'] = 'https://s3-eu-west-1.amazonaws.com/photos.euhwc.eusu.ed.ac.uk/'.get_post_meta($photo->ID, 'photo_url', true);
     $data[$category]['images'][$id]['thumb'] = 'https://s3-eu-west-1.amazonaws.com/photos.euhwc.eusu.ed.ac.uk/'.get_post_meta($photo->ID, 'photo_thumbnail_url', true);
-    $data[$category]['images'][$id]['votes'] = get_post_meta($photo->ID, 'photo_competition_vote', false);
-    $data[$category]['images'][$id]['name'] = get_the_author_meta('first_name', $photo->post_author) . ' ' . get_the_author_meta('last_name', $photo->post_author);
   }
 
   return $data;
 }
 
+/** Shortcode to display the submission form */
 function euhwc_photo_competition_submission_shortcode() {
+  // Require the user to be logged in
   if (!is_user_logged_in()) {
     wp_login_form();
     return '';
   }
 
   global $current_user;
-
   $messages = array();
   $categories = unserialize(PHOTOCOMP_CATEGORIES);
 
-  // Process photo submissions
+  // Process photo submission form
   if (isset($_POST['euhwc_photo_competition_upload_form_submitted']) &&
       wp_verify_nonce($_POST['euhwc_photo_competition_upload_form_submitted'], 'euhwc_photo_competition_upload_form')) {
     foreach ($categories as $category => $value) {
@@ -176,8 +195,10 @@ function euhwc_photo_competition_submission_shortcode() {
     }
   }
 
+  // Generate the submission form
   $out = '';
 
+  // Display error messages
   foreach ($messages as $message) {
     $out .= '<div class="error">'.$message.'</div>';
   }
@@ -185,8 +206,8 @@ function euhwc_photo_competition_submission_shortcode() {
   // Load previously submitted images from the database.
   $data = euhwc_photo_competition_get_entries($current_user->ID, $categories);
 
+  // Generate the form
   $out .= '<form id="euhwc_photo_competition_upload_form" method="post" action="" enctype="multipart/form-data">';
-
   foreach ($data as $category => $value) {
     $out .= '<h2 style="display: inline; margin-right: 1em;">' . $value['title'] . '</h2>';
     $out .= $value['description'];
@@ -212,78 +233,25 @@ function euhwc_photo_competition_submission_shortcode() {
     $out .= '</tr>';
     $out .= '</table>';
   }
-
   $out .= '</form>';
 
   return $out;
 }
 
-function euhwc_photo_competition_entries_shortcode() {
-  $categories = unserialize(PHOTOCOMP_CATEGORIES);
-  $data = euhwc_photo_competition_get_all_entries($categories);
-
-  $out = '';
-
-  $total_count = 0;
-  foreach ($categories as $category => $value) {
-    $count = 0;
-    foreach ($data as $user_id => $udata) {
-      foreach ($udata as $category2 => $cdata) {
-        if ($category == $category2) {
-          foreach ($cdata['images'] as $image => $idata) {
-            if ($idata['thumb'])
-              $count++;
-          }
-        }
-      }
-    }
-    $total_count += $count;
-    $out .= $category . ' has ' . $count . ' entries <br/>';
-  }
-  $out .= $total_count . ' total entries <br/><br/>';
-
-  $by_cat = array();
-  foreach ($categories as $cat => $ignore)
-    $by_cat[$cat] = array();
-
-  foreach ($data as $user_id => $udata) {
-    //$out .= $user_id.'<br/>';
-    foreach ($udata as $category => $cdata) {
-      //$out .= '&nbsp;&nbsp;&nbsp;'.$category.'<br/>';
-      foreach ($cdata['images'] as $image => $idata) {
-        if ($idata['thumb']) {
-          //$out .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.count($idata['votes']).' <a href="'.$idata['full'].'"><img style="display: inline;" src="'.$idata['thumb'].'" width="250px"/></a>';
-          array_push($by_cat[$category], $idata);
-        }
-      }
-      //$out .= '<br/>';
-    }
-  }
-
-  foreach ($by_cat as $category => $images) {
-    $out .= '<h3>'.$category.'</h3>';
-    foreach ($images as $image) {
-      if (count($image['votes']) > 0)
-        $out .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.count($image['votes']).' <a href="'.$image['full'].'"><img style="display: inline;" src="'.$image['thumb'].'" width="250px"/></a><br/>';
-    }
-  }
-
-  return $out;
-}
-
+/** Shortcode to display the voting form */
 function euhwc_photo_competition_voting_shortcode() {
+  // Require the user to be logged in
   if (!is_user_logged_in()) {
     wp_login_form();
     return '';
   }
 
   global $current_user;
-
   $messages = array();
   $out = '';
-
   $category_id = get_query_var('category');
 
+  // Process voting form submissions for the given category
   if (isset($_POST['euhwc_photo_competition_form_vote_submitted'])) {
     if (wp_verify_nonce($_POST['euhwc_photo_competition_form_vote_submitted'], 'euhwc_photo_competition_form_vote')) {
       $votes = array();
@@ -301,13 +269,14 @@ function euhwc_photo_competition_voting_shortcode() {
     }
   }
 
+  // Get all category information and entries
   $categories = unserialize(PHOTOCOMP_CATEGORIES);
   $data = euhwc_photo_competition_get_all_entries($categories);
 
   if (!$category_id) {
 
+    // Display the voting form for the given category
     foreach ($categories as $category => $value) {
-
       $votes = array();
       foreach ($data as $user_id => $udata) {
         foreach ($udata as $category2 => $cdata) {
@@ -339,8 +308,10 @@ function euhwc_photo_competition_voting_shortcode() {
 
       $out .= '</tr></table>';
     }
-  } else {
 
+  } else {
+    // Display the overall voting form, showing summary of current votes
+    // and links to vote in each category
     $category = $categories[$category_id];
     $out .= '<h2 style="display: inline; margin-right: 1em;">' . $category['title'] . '</h2>';
     $out .= $category['description'];
@@ -392,8 +363,6 @@ function check_votes() {
       array_push($order, ($i * 3824624) % 200);
       $i++;
     }
-    //$order = array_map(create_function('$val', 'return mt_rand();'), range(1, count($photos)));
-    //$out .= print_r($order, true);
     array_multisort($order, $photos);
 
     $i = 1;
@@ -422,21 +391,31 @@ function check_votes() {
   return $out;
 }
 
-function euhwc_cmp_voting($a, $b) {
-  if ($a['votes'] == $b['votes'])
-    return 0;
-  return ($a['votes'] < $b['votes']) ? -1 : 1;
-}
-
-function euhwc_results_html($image, $prefix, $suffix, $size) {
-  return '<td align="center">'.$prefix.$image['name'].$suffix.'<br/><a href="' . $image['full'] . '" class="thickbox"><img src="' . $image['thumb'] . '" width="'.$size.'"style="border-style: solid; border-width: 1px; border-color: #777; margin: 0.3em;" /></a></td>';
-}
-
-function euhwc_photo_competition_results_shortcode() {
+/** Shortcode to display a summary of the entries */
+//TODO: remove this - it's an admin only feature and should be moved to the admin interface
+function euhwc_photo_competition_entries_shortcode() {
   $categories = unserialize(PHOTOCOMP_CATEGORIES);
   $data = euhwc_photo_competition_get_all_entries($categories);
 
   $out = '';
+
+  $total_count = 0;
+  foreach ($categories as $category => $value) {
+    $count = 0;
+    foreach ($data as $user_id => $udata) {
+      foreach ($udata as $category2 => $cdata) {
+        if ($category == $category2) {
+          foreach ($cdata['images'] as $image => $idata) {
+            if ($idata['thumb'])
+              $count++;
+          }
+        }
+      }
+    }
+    $total_count += $count;
+    $out .= $category . ' has ' . $count . ' entries <br/>';
+  }
+  $out .= $total_count . ' total entries <br/><br/>';
 
   $by_cat = array();
   foreach ($categories as $cat => $ignore)
@@ -453,7 +432,53 @@ function euhwc_photo_competition_results_shortcode() {
   }
 
   foreach ($by_cat as $category => $images) {
-    usort($images, "euhwc_cmp_voting");
+    $out .= '<h3>'.$category.'</h3>';
+    foreach ($images as $image) {
+      if (count($image['votes']) > 0)
+        $out .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.count($image['votes']).' <a href="'.$image['full'].'"><img style="display: inline;" src="'.$image['thumb'].'" width="250px"/></a><br/>';
+    }
+  }
+
+  return $out;
+}
+
+/** Function to order entries by number of votes */
+function euhwc_photo_competition_cmp_voting($a, $b) {
+  if ($a['votes'] == $b['votes'])
+    return 0;
+  return ($a['votes'] < $b['votes']) ? -1 : 1;
+}
+
+/** Function to generate HTML for results of a given category */
+function euhwc_photo_competition_results_html($image, $prefix, $suffix, $size) {
+  return '<td align="center">'.$prefix.$image['name'].$suffix.'<br/><a href="' . $image['full'] . '" class="thickbox"><img src="' . $image['thumb'] . '" width="'.$size.'"style="border-style: solid; border-width: 1px; border-color: #777; margin: 0.3em;" /></a></td>';
+}
+
+/** Shortcode to display the photo competition results (winner and 2 runners up in each category) */
+function euhwc_photo_competition_results_shortcode() {
+  // Get all category information and entries
+  $categories = unserialize(PHOTOCOMP_CATEGORIES);
+  $data = euhwc_photo_competition_get_all_entries($categories);
+
+  $out = '';
+
+  // Organise the entries by category
+  $by_cat = array();
+  foreach ($categories as $cat => $ignore)
+    $by_cat[$cat] = array();
+  foreach ($data as $user_id => $udata) {
+    foreach ($udata as $category => $cdata) {
+      foreach ($cdata['images'] as $image => $idata) {
+        if ($idata['thumb']) {
+          array_push($by_cat[$category], $idata);
+        }
+      }
+    }
+  }
+
+  // Display the result for each category
+  foreach ($by_cat as $category => $images) {
+    usort($images, "euhwc_photo_competition_cmp_voting");
     $winner = $images[count($images)-1];
     $second = $images[count($images)-2];
     $third = $images[count($images)-3];
@@ -462,19 +487,19 @@ function euhwc_photo_competition_results_shortcode() {
     $out .= $categories[$category]['description'];
 
     $out .= '<table><tr>';
-
-    $out .= euhwc_results_html ($winner, 'Winner: <b>', '</b>', 250);
-    $out .= euhwc_results_html ($second, 'Runner up: ', '', 150);
-    $out .= euhwc_results_html ($third, 'Runner up: ', '', 150);
-
+    $out .= euhwc_photo_competition_results_html ($winner, 'Winner: <b>', '</b>', 250);
+    $out .= euhwc_photo_competition_results_html ($second, 'Runner up: ', '', 150);
+    $out .= euhwc_photo_competition_results_html ($third, 'Runner up: ', '', 150);
     $out .= '</tr></table>';
   }
 
   return $out;
 }
 
+/** Set the users vote for a category to the given entries, overwriting any of the
+    users existing votes in this category. Returns true on success or an error message on failure.  */
 function euhwc_photo_competition_vote_photo($user_id, $category, $image_ids) {
-  // clear all the users votes
+  // Clear all the users votes in this category
   $args = array(
     'post_type' => 'euhwc_photocom_entry',
     'post_status' => 'publish',
@@ -486,7 +511,8 @@ function euhwc_photo_competition_vote_photo($user_id, $category, $image_ids) {
     if ($category == $photo_category)
       delete_post_meta($image->ID, 'photo_competition_vote', $user_id);
   }
-  // add the new votes
+
+  // Add the new votes
   foreach ($image_ids as $image_id) {
     $result = add_post_meta($image_id, 'photo_competition_vote', $user_id);
     if (!$result) {
@@ -496,9 +522,11 @@ function euhwc_photo_competition_vote_photo($user_id, $category, $image_ids) {
   return true;
 }
 
+/** Add a photo competition entry to the specified category. */
 function euhwc_photo_competition_save_photo($category, $id, $file) {
   $error = FALSE;
 
+  // Check the image meets the format restrictions
   $image_data = getimagesize($file['tmp_name']);
   if ($file['error']) {
     $error = 'There was an error uploading your file!';
@@ -507,12 +535,12 @@ function euhwc_photo_competition_save_photo($category, $id, $file) {
   } elseif(($file['size'] > PHOTOCOMP_MAX_UPLOAD_SIZE)) {
     $error = 'Your image was too large. It can be at most 10MB.';
   }
-
   if ($error)
     return array('error' => $error);
 
   $result['title'] = $file['name'];
 
+  // Create the wordpress post, and attach the image as a media object
   global $current_user;
   $image_data = array(
     'post_title' => $result['title'],
@@ -520,7 +548,6 @@ function euhwc_photo_competition_save_photo($category, $id, $file) {
     'post_author' => $current_user->ID,
     'post_type' => 'euhwc_photocom_entry'
   );
-
   if ($post_id = wp_insert_post($image_data)) {
     $ret = euhwc_photo_competition_process_image($post_id, $file, $category, $id);
     if ($ret !== TRUE)
@@ -530,14 +557,16 @@ function euhwc_photo_competition_save_photo($category, $id, $file) {
   return TRUE;
 }
 
+/** Attach an image file to a wordpress post (entry). */
 function euhwc_photo_competition_process_image($post_id, $file, $category, $id) {
+  // Upload the image and generate a thumbnail
   $result = euhwc_photo_competition_upload_image($post_id, $file);
   if ($result !== TRUE)
     return $result;
 
+  // Attach the image to the entry
   $pathinfo = pathinfo($file['name']);
   $ext = $pathinfo['extension'];
-
   update_post_meta($post_id, 'category_id', $category);
   update_post_meta($post_id, 'image_id', $id);
   update_post_meta($post_id, 'photo_url', $post_id.'.'.$ext);
@@ -545,23 +574,8 @@ function euhwc_photo_competition_process_image($post_id, $file, $category, $id) 
   return TRUE;
 }
 
-// Handle the file upload
+/** Upload an image file and an auto-generated thumbnail */
 function euhwc_photo_competition_upload_image($post_id, $file) {
-  //$upload_errors = array(
-  //  UPLOAD_ERR_INI_SIZE   => "Larger than upload_max_filesize.",
-  //  UPLOAD_ERR_FORM_SIZE  => "Larger than form MAX_FILE_SIZE.",
-  //  UPLOAD_ERR_PARTIAL    => "Partial upload.",
-  //  UPLOAD_ERR_NO_FILE    => "No file.",
-  //  UPLOAD_ERR_NO_TMP_DIR => "No temporary directory.",
-  //  UPLOAD_ERR_CANT_WRITE => "Can't write to disk.",
-  //  UPLOAD_ERR_EXTENSION  => "File upload stopped by extension.",
-  //  UPLOAD_ERR_EMPTY      => "File is empty."
-  //);
-  //
-  //if ($file['error'] > 0) {
-  //  return 'Internal error: '.$upload_errors[$file['error']];
-  //}
-
   // Check it's an image
   if (!preg_match('/^image\/.+/', $file['type'])) {
     return 'File is not an image.';
@@ -584,13 +598,12 @@ function euhwc_photo_competition_upload_image($post_id, $file) {
   if (!euhwc_photo_competition_create_thumbnail($tmpdir.'/'.$filename, $file['type'], $tmpdir.'/'.$thumbname, 250, 200, 50))
      return 'Failed to generate thumbnail';
 
-  // Move original photo to AWS S3
+  // Move original photo and thumbnail to AWS S3
   $client = S3Client::factory(array(
     'key'    => 'AKIAJCXZW6ACDALH6RHA',
     'secret' => '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',
     'region' => 'eu-west-1',
   ));
-
   $result = $client->putObject(array(
     'Bucket'     => 'photos.euhwc.eusu.ed.ac.uk',
     'Key'        => $filename,
@@ -601,7 +614,6 @@ function euhwc_photo_competition_upload_image($post_id, $file) {
     'Key'        => $thumbname,
     'SourceFile' => $tmpdir.'/'.$thumbname,
   ));
-
   $client->waitUntilObjectExists(array(
     'Bucket' => 'photos.euhwc.eusu.ed.ac.uk',
     'Key'    => $filename
@@ -611,23 +623,25 @@ function euhwc_photo_competition_upload_image($post_id, $file) {
     'Key'    => $thumbname
   ));
 
+  // Remove the temporary files
   unlink($tmpdir.'/'.$filename);
   unlink($tmpdir.'/'.$thumbname);
 
   return TRUE;
 }
 
+/** Delete a photo competition entry */
 function euhwc_photo_competition_delete_photo($user_id, $category, $id) {
-
+  // Get all entries
   $args = array(
     'author' => $user_id,
     'post_type' => 'euhwc_photocom_entry',
     'post_status' => 'publish',
     'nopaging' => TRUE
   );
-
   $photos = new WP_Query($args);
 
+  // Find the entry by entry id and remove it and it's attached photo and thumbnail
   $post_id = FALSE;
   if ($photos->post_count) {
     foreach ($photos->posts as $photo) {
@@ -639,20 +653,23 @@ function euhwc_photo_competition_delete_photo($user_id, $category, $id) {
       }
     }
   }
+
+  // Check we found the entry
   if ($post_id === FALSE) {
     $result['error'] = 'Photo not found!';
     return $result;
   }
 
+  // Get the paths to the original photo and thumbnail
   $full = get_post_meta($post_id, 'photo_url', true);
   $thumb = get_post_meta($post_id, 'photo_thumbnail_url', true);
 
+  // Delete the photo and thumbnail from AWS S3
   $client = S3Client::factory(array(
     'key'    => 'AKIAJCXZW6ACDALH6RHA',
     'secret' => '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',
     'region' => 'eu-west-1',
   ));
-
   $result = $client->deleteObject(array(
     'Bucket'     => 'photos.euhwc.eusu.ed.ac.uk',
     'Key'        => $full,
@@ -662,10 +679,14 @@ function euhwc_photo_competition_delete_photo($user_id, $category, $id) {
     'Key'        => $thumb,
   ));
 
+  // Delete the entry from the database
+  // TODO: error checking
   wp_delete_post($post_id, true);
+
   return TRUE;
 }
 
+/** Generates a thumbnail for the given image */
 function euhwc_photo_competition_create_thumbnail($orig_path, $type, $new_path, $width, $height, $quality) {
   if (preg_match('/jpg|jpeg/', $type))
     $src_img = imagecreatefromjpeg($orig_path);
