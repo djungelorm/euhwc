@@ -49,8 +49,8 @@ class euhwc_sticky_posts_widget extends WP_Widget {
     if ($query->have_posts()) {
       while ($query->have_posts()) {
 
-        #TODO: display the title somewhere?
-        #$title = apply_filters( 'widget_title', $instance['title'] );
+        //TODO: display the title somewhere?
+        //$title = apply_filters( 'widget_title', $instance['title'] );
 
         echo $args['before_widget'];
 
