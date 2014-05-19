@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Sticky Posts
 Description: A widget that shows the most recent stickied posts from a given category.
-Version: 1.0
+Version: 1.1
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -36,6 +36,9 @@ class euhwc_sticky_posts_widget extends WP_Widget {
     $instance = array_merge($this->defaults, $instance);
 
     $sticky = get_option('sticky_posts');
+    if (count($sticky) == 0)
+      return;
+
     $query_args = array(
       'post__in'  => $sticky,
       'ignore_sticky_posts' => 1,
@@ -46,8 +49,8 @@ class euhwc_sticky_posts_widget extends WP_Widget {
     if ($query->have_posts()) {
       while ($query->have_posts()) {
 
-        #TODO: display the title somewhere?
-        #$title = apply_filters( 'widget_title', $instance['title'] );
+        //TODO: display the title somewhere?
+        //$title = apply_filters( 'widget_title', $instance['title'] );
 
         echo $args['before_widget'];
 
