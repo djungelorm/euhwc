@@ -36,6 +36,9 @@ class euhwc_sticky_posts_widget extends WP_Widget {
     $instance = array_merge($this->defaults, $instance);
 
     $sticky = get_option('sticky_posts');
+    if (count($sticky) == 0)
+      return;
+
     $query_args = array(
       'post__in'  => $sticky,
       'ignore_sticky_posts' => 1,
