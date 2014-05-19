@@ -15,6 +15,7 @@
         <?php do_action( 'twentythirteen_credits' ); ?>
         <a href="/constitution" target="_blank" class="nowrap">Constitution</a> |
         <a href="/safety-policy" target="_blank" class="nowrap">Safety Policy</a> |
+        <a href="/trip-information" target="_blank" class="nowrap">Trip Information</a> |
         <a href="/contact" class="nowrap">Contact Us</a> |
         <a href="http://www.eusu.ed.ac.uk" target="_blank" class="nowrap">EUSU</a>
 			</div><!-- .site-info -->
