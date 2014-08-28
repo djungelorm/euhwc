@@ -107,8 +107,8 @@ function euhwc_widgets_init() {
 add_action('widgets_init', 'euhwc_widgets_init', 101);
 
 function euhwc_remove_twentythirteen_options() {
-	remove_theme_support('custom-background');
-	remove_theme_support('custom-header');
+  remove_theme_support('custom-background');
+  remove_theme_support('custom-header');
 }
 
 add_action('after_setup_theme', 'euhwc_remove_twentythirteen_options', 100);
@@ -184,6 +184,5 @@ function intercept_protected_page($posts, &$wp_query) {
   return $posts;
 }
 add_filter('the_posts', 'intercept_protected_page', 5, 2);
-
 
 ?>
