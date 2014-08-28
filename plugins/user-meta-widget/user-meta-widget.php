@@ -2,7 +2,7 @@
 /*
 Plugin Name: User Meta Widget
 Description: A widget that provides links to log out and user account information.
-Version: 1.3
+Version: 1.4
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
