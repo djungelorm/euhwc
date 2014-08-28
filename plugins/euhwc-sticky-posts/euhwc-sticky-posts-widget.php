@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Sticky Posts
 Description: A widget that shows the most recent stickied posts from a given category.
-Version: 1.1
+Version: 1.2
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
