@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: User Meta Widget
-Description: A widget that provides log out and edit profile links.
+Description: A widget that provides links to log out and user account information.
 Version: 1.3
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
@@ -19,30 +19,36 @@ class user_meta_widget extends WP_Widget {
     parent::__construct(
       'user_meta_widget',
       'User Meta',
-      array('description' => 'Provides log out and edit profile links, and is hidden when the user is not logged in.')
+      array('description' => 'Provides links to log out, account information and private pages that the user can access. The widget is hidden if the current user is not logged in.')
     );
   }
 
   public function widget($args, $instance) {
-    if (!is_user_logged_in())
+    if (!is_user_logged_in()) {
       return;
+    }
 
     $title = apply_filters( 'widget_title', $instance['title'] );
     echo $args['before_widget'];
-    if ( ! empty( $title ) )
+    if ( ! empty( $title ) ) {
       echo $args['before_title'] . $title . $args['after_title'];
+    }
 
     $current_user = wp_get_current_user();
 
     echo $instance['before_content'];
     echo '<ul>';
+
+    // Show logged in as and current priviledges
     echo '<li><span class="icon-user"></span>Logged in as <i>' . $current_user->display_name . '</i></li>';
     foreach ($current_user->roles as $role) {
-      if ($role == get_option('default_role'))
+      if ($role == get_option('default_role')) {
         continue;
+      }
       echo '<li>You have <i>' .  $role . '</i> privileges</li>';
     }
 
+    // Display links to private pages that the user can access
     if (current_user_can('read_private_pages')) {
       $pages = get_pages(array('post_status' => 'private'));
       foreach ($pages as $page) {
@@ -50,9 +56,11 @@ class user_meta_widget extends WP_Widget {
       }
     }
 
-
     //$output[] = '<a href="/edit-profile">Edit profile</a></li>';
+
+    // Log out link
     echo '<li><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></li>';
+
     echo '</ul>';
     echo $instance['after_content'];
     echo $args['after_widget'];
