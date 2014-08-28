@@ -51,8 +51,11 @@ class user_meta_widget extends WP_Widget {
     // Display links to private pages that the user can access
     if (current_user_can('read_private_pages')) {
       $pages = get_pages(array('post_status' => 'private'));
-      foreach ($pages as $page) {
-        echo '<li><span class="icon-post"><a href="' . get_page_link($page->ID) . '">' . $page->post_title . '</a></span></li>';
+      if ( ! empty( $pages ) ) {
+        echo '<li>Private pages:</li>';
+        foreach ($pages as $page) {
+          echo '<li><span class="icon-post"><a href="' . get_page_link($page->ID) . '">' . $page->post_title . '</a></span></li>';
+        }
       }
     }
 
