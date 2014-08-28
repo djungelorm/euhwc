@@ -900,6 +900,13 @@ td {
   vertical-align: middle;
 }
 
+.icon-external:before {
+  content: '\f442';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .icon-none {
   display: inline-block;
   padding-left: 16px;
