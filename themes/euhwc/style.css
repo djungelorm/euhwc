@@ -20,7 +20,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
   border-right: 1px solid #fff;
 }
 
-.site-main {
+#page {
   border-left: 1px solid #c9d9e1;
   border-right: 1px solid #c9d9e1;
 }
@@ -46,7 +46,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 .site-footer {
   background-color: #e8f5fb;
-  border: 1px solid #c9d9e1;
+  border-top: 1px solid #c9d9e1;
+  border-bottom: 1px solid #c9d9e1;
 }
 
 .site-footer a, .site-footer a:visited {
