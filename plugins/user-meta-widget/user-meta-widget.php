@@ -45,9 +45,9 @@ class user_meta_widget extends WP_Widget {
       if ($role == get_option('default_role')) {
         continue;
       }
-      echo '<li><span style="icon-none">You have <i>' .  $role . '</i> privileges</span></li>';
+      echo '<li><span class="icon-none">You have <i>' .  $role . '</i> privileges</span></li>';
     }
-    echo '<li><span style="icon-none"><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></span></li>';
+    echo '<li><span class="icon-none"><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></span></li>';
 
     // Display links to private pages that the user can access
     if (current_user_can('read_private_pages')) {
