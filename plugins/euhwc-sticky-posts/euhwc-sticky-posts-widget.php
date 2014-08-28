@@ -58,8 +58,8 @@ class euhwc_sticky_posts_widget extends WP_Widget {
           echo $args['before_title'] . $title . $args['after_title'];
 
         $query->the_post();
-        echo '<h3>' . get_the_title() . '</h3>';
-        echo '<p>' . get_the_content() . '</p>';
+        echo '<h3>' . apply_filters( 'the_title', get_the_title() ) . '</h3>';
+        echo apply_filters( 'the_content', get_the_content() );
 
         echo $args['after_widget'];
       }
