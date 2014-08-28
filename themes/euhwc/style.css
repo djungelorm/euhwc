@@ -4,7 +4,7 @@ Description: Edinburgh University Hill Walking Club website theme.
 Template: twentythirteen
 Author: Alex Collins
 Author URI: http://uk.linkedin.com/in/alexanderjamescollins
-Version: 1.9
+Version: 1.10
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -949,4 +949,17 @@ td {
   font: normal 16px/1 'Genericons';
   display: inline-block;
   vertical-align: middle;
+}
+
+/* EUHWC sticky posts widget */
+.widget_euhwc_sticky_posts_widget ul {
+  list-style-type: square;
+  margin: 0;
+  padding: 0;
+  margin-left: 24px;
+}
+
+.widget_euhwc_sticky_posts_widget li {
+  padding: 0;
+  margin: 0;
 }
