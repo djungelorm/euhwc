@@ -273,6 +273,10 @@ ul.nav-menu ul a:hover,
   margin-bottom: 10px;
 }
 
+.entry-thumbnail {
+  float: right;
+}
+
 .entry-title a {
   color: #141412;
 }
