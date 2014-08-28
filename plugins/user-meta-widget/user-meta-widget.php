@@ -39,14 +39,15 @@ class user_meta_widget extends WP_Widget {
     echo $instance['before_content'];
     echo '<ul>';
 
-    // Show logged in as and current priviledges
-    echo '<li><span class="icon-user"></span>Logged in as <i>' . $current_user->display_name . '</i></li>';
+    // Show logged in as, log out link and current priviledges
+    echo '<li><span class="icon-user"></span>Logged in as <i style="white-space: nowrap;">' . $current_user->display_name . '</i>';
     foreach ($current_user->roles as $role) {
       if ($role == get_option('default_role')) {
         continue;
       }
-      echo '<li>You have <i>' .  $role . '</i> privileges</li>';
+      echo '<li><span style="icon-none">You have <i>' .  $role . '</i> privileges</span></li>';
     }
+    echo '<li><span style="icon-none"><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></span></li>';
 
     // Display links to private pages that the user can access
     if (current_user_can('read_private_pages')) {
@@ -60,9 +61,6 @@ class user_meta_widget extends WP_Widget {
     }
 
     //$output[] = '<a href="/edit-profile">Edit profile</a></li>';
-
-    // Log out link
-    echo '<li><a href="'.wp_logout_url($_SERVER['REQUEST_URI']).'">Log out</a></li>';
 
     echo '</ul>';
     echo $instance['after_content'];
