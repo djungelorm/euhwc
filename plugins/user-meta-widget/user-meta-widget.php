@@ -52,7 +52,7 @@ class user_meta_widget extends WP_Widget {
     if (current_user_can('read_private_pages')) {
       $pages = get_pages(array('post_status' => 'private'));
       foreach ($pages as $page) {
-        echo '<li><a href="' . get_page_link($page->ID) . '">' . $page->post_title . '</a></li>';
+        echo '<li><span class="icon-post"><a href="' . get_page_link($page->ID) . '">' . $page->post_title . '</a></span></li>';
       }
     }
 
