@@ -75,7 +75,7 @@ class euhwc_events_widget extends WP_Widget {
     }
 
     if ($location)
-      $output[] = '<span class="icon-location">' . $location . '</span>';
+      $output[] = '<span class="icon-location nowrap">' . $location . '</span>';
 
     if ($time || $location)
       $output[] = '<br/>';
