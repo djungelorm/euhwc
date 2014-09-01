@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Events Widget
 Description: A widget that provides events listing.
-Version: 1.0
+Version: 1.1
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -75,7 +75,7 @@ class euhwc_events_widget extends WP_Widget {
     }
 
     if ($location)
-      $output[] = '<span class="icon-location">' . $location . '</span>';
+      $output[] = '<span class="icon-location nowrap">' . $location . '</span>';
 
     if ($time || $location)
       $output[] = '<br/>';
