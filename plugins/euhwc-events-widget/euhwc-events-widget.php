@@ -56,10 +56,6 @@ class euhwc_events_widget extends WP_Widget {
 
   private function event_info($event, $show_excerpt = false, $thumbnail_size = array(120,120)) {
     $post = get_post($event->post_id);
-    $time = $event->output('#_EVENTTIMES #_EVENTDATES');
-    $facebook = $event->output('#_ATT{FacebookEvent}');
-    $location = $event->location_id == 0 ? '' : $event->output('#_LOCATIONLINK');
-
     $output = array();
 
     $output[] = '<a href="' . $event->output('#_EVENTURL') . '">';
@@ -67,6 +63,9 @@ class euhwc_events_widget extends WP_Widget {
     $output[] = '</a>';
 
     $output[] = '<span class="event-title">' . $event->output('#_EVENTLINK') . '</span><br/>';
+
+    $time = $event->output('#_EVENTTIMES #_EVENTDATES');
+    $location = $event->location_id == 0 ? '' : $event->output('#_LOCATIONLINK');
 
     if ($time) {
       $output[] = '<span class="icon-time">' . $time . '</span>';
@@ -80,6 +79,7 @@ class euhwc_events_widget extends WP_Widget {
     if ($time || $location)
       $output[] = '<br/>';
 
+    $facebook = $event->output('#_ATT{FacebookEvent}');
     if ($facebook)
       $output[] = '<a class="icon-facebook" href="' . $facebook . '" target="_blank">Facebook event</a><br/>';
 
