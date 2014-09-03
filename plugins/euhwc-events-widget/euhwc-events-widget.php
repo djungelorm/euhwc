@@ -54,7 +54,7 @@ class euhwc_events_widget extends WP_Widget {
       ));
   }
 
-  private function event_info($event, $show_excerpt = false, $thumbnail_size = array(120,120)) {
+  private function event_info($event, $show_excerpt = false, $thumbnail_size = array(70,70)) {
     $post = get_post($event->post_id);
     $output = array();
 
@@ -110,15 +110,8 @@ class euhwc_events_widget extends WP_Widget {
     } else {
 
       echo '<ul>';
-
-      // Display first event
-      $event = array_shift($events);
-      echo '<li>' . $this->event_info($event, true) . '</li>';
-
-      // Display more events
       foreach ($events as $event)
-        echo '<li>' . $this->event_info($event, false, array(70,70)) . '</li>';
-
+        echo '<li>' . $this->event_info($event) . '</li>';
       echo '</ul>';
 
       if ($instance['all_events'])
