@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Events Widget
 Description: A widget that provides events listing.
-Version: 1.1
+Version: 1.2
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -54,12 +54,8 @@ class euhwc_events_widget extends WP_Widget {
       ));
   }
 
-  private function event_info($event, $show_excerpt = false, $thumbnail_size = array(120,120)) {
+  private function event_info($event, $show_excerpt = false, $thumbnail_size = array(70,70)) {
     $post = get_post($event->post_id);
-    $time = $event->output('#_EVENTTIMES #_EVENTDATES');
-    $facebook = $event->output('#_ATT{FacebookEvent}');
-    $location = $event->location_id == 0 ? '' : $event->output('#_LOCATIONLINK');
-
     $output = array();
 
     $output[] = '<a href="' . $event->output('#_EVENTURL') . '">';
@@ -67,6 +63,9 @@ class euhwc_events_widget extends WP_Widget {
     $output[] = '</a>';
 
     $output[] = '<span class="event-title">' . $event->output('#_EVENTLINK') . '</span><br/>';
+
+    $time = $event->output('#_EVENTTIMES #_EVENTDATES');
+    $location = $event->location_id == 0 ? '' : $event->output('#_LOCATIONLINK');
 
     if ($time) {
       $output[] = '<span class="icon-time">' . $time . '</span>';
@@ -80,8 +79,9 @@ class euhwc_events_widget extends WP_Widget {
     if ($time || $location)
       $output[] = '<br/>';
 
+    $facebook = $event->output('#_ATT{FacebookEvent}');
     if ($facebook)
-      $output[] = '<a class="icon-facebook" href="' . $facebook . '">Facebook event</a><br/>';
+      $output[] = '<a class="icon-facebook" href="' . $facebook . '" target="_blank">Facebook event</a><br/>';
 
     if ($show_excerpt)
        $output[] = $post->post_excerpt;
@@ -110,15 +110,8 @@ class euhwc_events_widget extends WP_Widget {
     } else {
 
       echo '<ul>';
-
-      // Display first event
-      $event = array_shift($events);
-      echo '<li>' . $this->event_info($event, true) . '</li>';
-
-      // Display more events
       foreach ($events as $event)
-        echo '<li>' . $this->event_info($event, false, array(70,70)) . '</li>';
-
+        echo '<li>' . $this->event_info($event) . '</li>';
       echo '</ul>';
 
       if ($instance['all_events'])
