@@ -81,7 +81,7 @@ class euhwc_events_widget extends WP_Widget {
       $output[] = '<br/>';
 
     if ($facebook)
-      $output[] = '<a class="icon-facebook" href="' . $facebook . '">Facebook event</a><br/>';
+      $output[] = '<a class="icon-facebook" href="' . $facebook . '" target="_blank">Facebook event</a><br/>';
 
     if ($show_excerpt)
        $output[] = $post->post_excerpt;
