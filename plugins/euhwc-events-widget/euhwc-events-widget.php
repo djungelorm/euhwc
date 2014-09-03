@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Events Widget
 Description: A widget that provides events listing.
-Version: 1.1
+Version: 1.2
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
