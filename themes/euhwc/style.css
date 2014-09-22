@@ -1,10 +1,10 @@
 /*
 Theme Name: EUHWC
-Description: Edinburgh University Hill Walking Club website theme.
+Description: Edinburgh University Hillwalking Club website theme
 Template: twentythirteen
 Author: Alex Collins
 Author URI: http://uk.linkedin.com/in/alexanderjamescollins
-Version: 1.10
+Version: 1.11
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -20,7 +20,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
   border-right: 1px solid #fff;
 }
 
-.site-main {
+#page {
   border-left: 1px solid #c9d9e1;
   border-right: 1px solid #c9d9e1;
 }
@@ -46,7 +46,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 .site-footer {
   background-color: #e8f5fb;
-  border: 1px solid #c9d9e1;
+  border-top: 1px solid #c9d9e1;
+  border-bottom: 1px solid #c9d9e1;
 }
 
 .site-footer a, .site-footer a:visited {
@@ -89,8 +90,6 @@ h5 {
 
 h6 {
   font-size: 16px;
-}
-
 }
 
 /* Links --------------------------------------------------------------------- */
@@ -272,6 +271,10 @@ ul.nav-menu ul a:hover,
 
 .entry-header {
   margin-bottom: 10px;
+}
+
+.entry-thumbnail {
+  float: right;
 }
 
 .entry-title a {
@@ -874,6 +877,39 @@ td {
   font: normal 16px/1 'Genericons';
   display: inline-block;
   vertical-align: middle;
+}
+
+.icon-calendar:before {
+  content: '\f307';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-list:before {
+  content: '\f100'; /*\f505*/
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-download:before {
+  content: '\f442';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-external:before {
+  content: '\f442';
+  font: normal 16px/1 'Genericons';
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-none {
+  display: inline-block;
+  padding-left: 16px;
 }
 
 /* Widget styling ------------------------------------------------------------ */

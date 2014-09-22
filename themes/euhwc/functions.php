@@ -52,6 +52,14 @@ function euhwc_widgets_remove() {
 add_action('widgets_init', 'euhwc_widgets_remove', 100);
 
 /**
+ * Remove unused theme customization options
+ */
+function euhwc_customize_register( $wp_customize ) {
+  $wp_customize->remove_control('blogdescription');
+}
+add_action('customize_register', 'euhwc_customize_register');
+
+/**
  * Register widget areas
  */
 function euhwc_widgets_init() {

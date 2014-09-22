@@ -6,7 +6,7 @@
 
 <html>
   <head>
-    <title>Edinburgh University Hill Walking Club</title>
+    <title>Edinburgh University Hillwalking Club</title>
   </head>
   <style type="text/css">
   body {
