@@ -86,8 +86,8 @@ function euhwc_logo_competition_form_shortcode($atts, $content = null) {
       $out .= '<div class="error">'.$result['error'].'</div>';
     } else {
       $image_data = array(
-        'post_title' => $result['title'],
-        'post_status' => 'pending',
+        'post_title' => $current_user->display_name.' ('.$result['title'].')',
+        'post_status' => 'publish',
         'post_author' => $current_user->ID,
         'post_type' => 'euhwc_logocomp_entry'
       );
@@ -218,7 +218,7 @@ function euhwc_logo_competition_get_num_entries($user_id) {
   $args = array(
     'author' => $user_id,
     'post_type' => 'euhwc_logocomp_entry',
-    'post_status' => 'pending'
+    'post_status' => 'publish'
   );
 
   $user_images = new WP_Query($args);
@@ -231,7 +231,7 @@ function euhwc_logo_competition_get_table($user_id, $year) {
   $args = array(
     'author' => $user_id,
     'post_type' => 'euhwc_logocomp_entry',
-    'post_status' => 'pending',
+    'post_status' => 'publish',
     'year' => $year
   );
 
