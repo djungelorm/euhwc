@@ -41,7 +41,7 @@ function euhwc_logo_competition_init() {
     'hierarchical' => false,
     'map_meta_cap' => true,
     'menu_position' => null,
-    'supports' => array('title', 'editor', 'author', 'thumbnail')
+    'supports' => array('title', 'author', 'thumbnail')
   );
 
   register_post_type('euhwc_logocomp_entry', $args);
