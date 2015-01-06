@@ -59,7 +59,7 @@ add_shortcode('euhwc_logo_competition_entries', 'euhwc_logo_competition_entries_
 add_shortcode('euhwc_logo_competition_voting', 'euhwc_logo_competition_voting_shortcode');
 add_shortcode('euhwc_logo_competition_results', 'euhwc_logo_competition_results_shortcode');
 
-function euhwc_logo_competition_form_shortcode() {
+function euhwc_logo_competition_form_shortcode($atts, $content = null) {
 
   if (!is_user_logged_in()) {
     wp_login_form();
@@ -67,6 +67,15 @@ function euhwc_logo_competition_form_shortcode() {
   }
 
   global $current_user;
+
+  // Default settings
+  $max_entries = 5;
+
+  // Decode attributes
+  foreach ($atts as $key => $att) {
+    if ($key == 'max_entries')
+      $max_entries = $att;
+  }
 
   $out = '<h2>Submit a Logo</h2>';
 
@@ -90,15 +99,25 @@ function euhwc_logo_competition_form_shortcode() {
     }
   }
 
-  $out .= euhwc_logo_competition_get_upload_form();
+  $out .= euhwc_logo_competition_get_upload_form($max_entries);
   return $out;
 }
 
-function euhwc_logo_competition_entries_shortcode() {
-  global $current_user;
+function euhwc_logo_competition_entries_shortcode($atts, $content = null) {
 
   if (!is_user_logged_in()) {
     return '';
+  }
+
+  global $current_user;
+
+  // Default settings
+  $year = date('Y');
+
+  // Decode attributes
+  foreach ($atts as $key => $att) {
+    if ($key == 'year')
+      $year = $att;
   }
 
   $out = '<h2>Your Logo Competition Entries</h2>';
@@ -114,7 +133,7 @@ function euhwc_logo_competition_entries_shortcode() {
     }
   }
 
-  $table = euhwc_logo_competition_get_table($current_user->ID);
+  $table = euhwc_logo_competition_get_table($current_user->ID, $year);
   if ($table) {
     $out .= '<p>Your entries are shown below. Click on one to view it full size.</p>';
     $out .= $table;
@@ -127,13 +146,23 @@ function euhwc_logo_competition_entries_shortcode() {
 }
 
 
-function euhwc_logo_competition_voting_shortcode() {
+function euhwc_logo_competition_voting_shortcode($atts, $content = null) {
+
   if (!is_user_logged_in()) {
     wp_login_form();
     return '';
   }
 
   global $current_user;
+
+  // Default settings
+  $year = date('Y');
+
+  // Decode attributes
+  foreach ($atts as $key => $att) {
+    if ($key == 'year')
+      $year = $att;
+  }
 
   $out = '';
 
@@ -147,11 +176,12 @@ function euhwc_logo_competition_voting_shortcode() {
     }
   }
 
-  $out .= euhwc_logo_competition_get_voting_table();
+  $out .= euhwc_logo_competition_get_voting_table($year);
   return $out;
 }
 
-function euhwc_logo_competition_results_shortcode() {
+function euhwc_logo_competition_results_shortcode($atts, $content = null) {
+
   if (!is_user_logged_in()) {
     wp_login_form();
     return '';
@@ -159,13 +189,22 @@ function euhwc_logo_competition_results_shortcode() {
 
   global $current_user;
 
-  return euhwc_logo_competition_get_results_table();
+  // Default settings
+  $year = date('Y');
+
+  // Decode attributes
+  foreach ($atts as $key => $att) {
+    if ($key == 'year')
+      $year = $att;
+  }
+
+  return euhwc_logo_competition_get_results_table($year);
 }
 
-function euhwc_logo_competition_get_upload_form() {
+function euhwc_logo_competition_get_upload_form($max_entries) {
   global $current_user;
-  if (euhwc_logo_competition_get_num_entries($current_user->ID) >= 5){
-    return "<p>You can't submit any more logos. It's a maximum of 5 each!</p>";
+  if (euhwc_logo_competition_get_num_entries($current_user->ID) >= $max_entries){
+    return "<p>You can't submit any more logos. It's a maximum of ".$max_entries." each!</p>";
   }
   $out = '<form id="euhwc_logo_competition_upload_form" method="post" action="" enctype="multipart/form-data">';
   $out .= wp_nonce_field('euhwc_logo_competition_upload_form', 'euhwc_logo_competition_upload_form_submitted');
@@ -187,12 +226,13 @@ function euhwc_logo_competition_get_num_entries($user_id) {
   return $user_images->post_count;
 }
 
-function euhwc_logo_competition_get_table($user_id) {
+function euhwc_logo_competition_get_table($user_id, $year) {
 
   $args = array(
     'author' => $user_id,
     'post_type' => 'euhwc_logocomp_entry',
-    'post_status' => 'pending'
+    'post_status' => 'pending',
+    'year' => $year
   );
 
   $user_images = new WP_Query($args);
@@ -284,13 +324,14 @@ function euhwc_logo_competition_parse_file($file = '') {
   return $result;
 }
 
-function euhwc_logo_competition_get_voting_table() {
+function euhwc_logo_competition_get_voting_table($year) {
 
   global $current_user;
 
   $args = array(
     'post_type' => 'euhwc_logocomp_entry',
-    'post_status' => 'publish'
+    'post_status' => 'publish',
+    'year' => $year
   );
 
   $user_images = new WP_Query($args);
@@ -360,13 +401,14 @@ function euhwc_logo_competition_vote_image($user_id, $image_id) {
   return 'Nonce not valid';
 }
 
-function euhwc_logo_competition_get_results_table() {
+function euhwc_logo_competition_get_results_table($year) {
 
   global $current_user;
 
   $args = array(
     'post_type' => 'euhwc_logocomp_entry',
-    'post_status' => 'publish'
+    'post_status' => 'publish',
+    'year' => $year
   );
 
   $user_images = new WP_Query($args);
