@@ -430,7 +430,7 @@ function euhwc_logo_competition_get_results_table($year) {
     $post_thumbnail_id = get_post_thumbnail_id($user_image->ID);
     $out .= wp_get_attachment_link($post_thumbnail_id, 'thumbnail');
     $out .= '<br/>';
-    $out .= count($votes) . ' votes';
+    $out .= get_the_author_meta('display_name', $user_image->post_author) . ', '. count($votes) . ' votes';
     $out .= '</td>';
     $i++;
     if ($i % 3 == 0)
