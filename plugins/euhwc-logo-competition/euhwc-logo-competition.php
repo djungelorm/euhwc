@@ -34,7 +34,7 @@ function euhwc_logo_competition_init() {
         'not_found' =>  __('No Logos found'),
         'not_found_in_trash' => __('No Logos found in Trash'),
         'parent_item_colon' => '',
-        'menu_name' => __('Logos')
+        'menu_name' => __('Logo Comp.')
       ),
     'public' => true,
     'has_archive' => true,
