@@ -14,6 +14,8 @@ terms of the Do What The Fuck You Want To Public License, Version 2,
 as published by Sam Hocevar. See the COPYING file for more details.
 */
 
+defined('ABSPATH') or die('No script kiddies please!');
+
 add_action('init', 'euhwc_logo_competition_init');
 
 function euhwc_logo_competition_init() {
