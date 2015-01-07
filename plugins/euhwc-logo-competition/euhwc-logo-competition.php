@@ -6,6 +6,7 @@ Version: 1.1
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
+Plugin URI: http://euhwc.eusu.ed.ac.uk/wp-content/plugins/euhwc-logo-competition/readme.txt
 */
 /*
 Copyright © 2013 Alex Collins
