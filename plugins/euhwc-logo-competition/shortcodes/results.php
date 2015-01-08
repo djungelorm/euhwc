@@ -31,18 +31,6 @@ function euhwc_logo_competition_results_shortcode($atts, $content = null) {
   return euhwc_logo_competition_get_results_table($year);
 }
 
-/** Get the number of votes for a given logo */
-function euhwc_logo_competition_num_votes($logo) {
-  return count(get_post_meta($logo->ID, 'logo_competition_vote', false));
-}
-
-/** Comparison function for sorting an array of logos in descending order of votes */
-function euhwc_logo_competition_results_cmp($a, $b) {
-  $na = euhwc_logo_competition_num_votes($a);
-  $nb = euhwc_logo_competition_num_votes($b);
-  return $nb - $na;
-}
-
 /** Generate results table */
 function euhwc_logo_competition_get_results_table($year) {
 
