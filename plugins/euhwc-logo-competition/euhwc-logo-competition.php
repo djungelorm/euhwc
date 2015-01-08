@@ -21,21 +21,21 @@ add_action('init', 'euhwc_logo_competition_init');
 
 function euhwc_logo_competition_init() {
   $args = array(
-      'labels' => array(
-        'name' => __('Logos'),
-        'singular_name' => __('Logo'),
-        'add_new' => __('Add New Logo'),
-        'add_new_item' => __('Add New Logo'),
-        'edit_item' => __('Edit Logo'),
-        'new_item' => __('Add New Logo'),
-        'all_items' => __('View Logos'),
-        'view_item' => __('View Logo'),
-        'search_items' => __('Search Logos'),
-        'not_found' =>  __('No Logos found'),
-        'not_found_in_trash' => __('No Logos found in Trash'),
-        'parent_item_colon' => '',
-        'menu_name' => __('Logo Comp.')
-      ),
+    'labels' => array(
+     'name' => __('Logos'),
+      'singular_name' => __('Logo'),
+      'add_new' => __('Add New Logo'),
+      'add_new_item' => __('Add New Logo'),
+      'edit_item' => __('Edit Logo'),
+      'new_item' => __('Add New Logo'),
+      'all_items' => __('View Logos'),
+      'view_item' => __('View Logo'),
+      'search_items' => __('Search Logos'),
+      'not_found' =>  __('No Logos found'),
+      'not_found_in_trash' => __('No Logos found in Trash'),
+      'parent_item_colon' => '',
+      'menu_name' => __('Logo Comp.')
+    ),
     'public' => true,
     'has_archive' => true,
     'query_var' => true,
