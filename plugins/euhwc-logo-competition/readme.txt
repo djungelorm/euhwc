@@ -34,5 +34,10 @@ of a page, and it will be replaced with the appropriate functionality.
    number of votes each one of them got. The year should be set to the current
    year, to hide submissions from previous years.
 
+ * [euhwc_logo_competition_results year=2015 winner_only]
+
+   This displays just the winner(s) of the logo competition. If there are
+   multiple logos with the same number of votes they are all displayed.
+
 All of the logos that have been submitted can be viewed from the "Logo
 Comp." tab on the main menu in the admin panel.
