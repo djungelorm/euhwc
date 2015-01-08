@@ -50,6 +50,31 @@ function euhwc_logo_competition_init() {
   register_post_type('euhwc_logocomp_entry', $args);
 }
 
+add_action('do_meta_boxes', 'euhwc_logo_competition_image_box');
+function euhwc_logo_competition_image_box() {
+  remove_meta_box('postimagediv', 'euhwc_logocomp_entry', 'side');
+  add_meta_box('postimagediv', __('Logo'), 'post_thumbnail_meta_box', 'euhwc_logocomp_entry', 'normal', 'high');
+}
+
+function euhwc_logo_competition_add_meta_box() {
+  add_meta_box(
+    'euhwc_logo_competition_votes',
+    'Votes',
+    'euhwc_logo_competition_meta_box_callback',
+    'euhwc_logocomp_entry'
+  );
+}
+add_action('add_meta_boxes', 'euhwc_logo_competition_add_meta_box');
+
+function euhwc_logo_competition_meta_box_callback($post) {
+  wp_nonce_field('euhwc_logo_competition_meta_box', 'euhwc_logo_competition_meta_box_nonce' );
+  $value = get_post_meta($post->ID, 'logo_competition_vote', true);
+  echo '<label for="euhwc_logo_competition_votes">';
+  echo 'Vote string (DO NOT edit unless you know what you are doing!)';
+  echo '</label> ';
+  echo '<input type="text" id="euhwc_logo_competition_votes" name="euhwc_logo_competition_votes" value="' . esc_attr($value) . '" size="25" />';
+}
+
 define('MAX_UPLOAD_SIZE', 2*1024*1024);
 define('TYPE_WHITELIST', serialize(array(
   'image/jpeg',
