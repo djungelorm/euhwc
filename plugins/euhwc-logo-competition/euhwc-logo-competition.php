@@ -21,7 +21,7 @@ require_once(dirname(__FILE__).'/includes/logo.php');
 require_once(dirname(__FILE__).'/includes/admin.php');
 require_once(dirname(__FILE__).'/includes/functions.php');
 
-require_once(dirname(__FILE__).'/shortcodes/submit.php');
+require_once(dirname(__FILE__).'/shortcodes/upload.php');
 require_once(dirname(__FILE__).'/shortcodes/entries.php');
 require_once(dirname(__FILE__).'/shortcodes/voting.php');
 require_once(dirname(__FILE__).'/shortcodes/results.php');
