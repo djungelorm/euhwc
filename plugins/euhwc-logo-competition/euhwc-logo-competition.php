@@ -18,7 +18,7 @@ as published by Sam Hocevar. See the COPYING file for more details.
 defined('ABSPATH') or die('No script kiddies please!');
 
 require_once(dirname(__FILE__).'/includes/options.php');
-require_once(dirname(__FILE__).'/includes/logo.php');
+require_once(dirname(__FILE__).'/includes/logos.php');
 require_once(dirname(__FILE__).'/includes/admin.php');
 require_once(dirname(__FILE__).'/includes/functions.php');
 

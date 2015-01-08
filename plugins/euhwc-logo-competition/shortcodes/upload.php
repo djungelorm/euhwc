@@ -21,21 +21,18 @@ class EUHWCLogoCompetition_Upload {
   }
 
   public function shortcode() {
-    global $current_user;
     if (!is_user_logged_in()) {
       wp_login_form();
       return '';
     }
-
     return '<h2>Submit a Logo</h2>' . $this->generate_form();
   }
 
   /** Generate upload form HTML */
   private function generate_form() {
-    global $current_user;
     $max_entries = EUHWCLogoCompetition_Options::max_entries();
     $out = '';
-    $num_entries = euhwc_logo_competition_get_num_entries($current_user->ID);
+    $num_entries = EUHWCLogoCompetition_Logos::num_entries();
     if ($num_entries >= $max_entries) {
       $out .= '<p>You can\'t submit any more logos. It\'s a maximum of '.$max_entries.' each!</p>';
     } else {
@@ -57,6 +54,7 @@ class EUHWCLogoCompetition_Upload {
 
   /** Process an upload form submission */
   private function upload_logo() {
+    global $current_user;
     $out = '';
     if (wp_verify_nonce($_POST['euhwc_logo_competition_upload_form_submitted'], 'euhwc_logo_competition_upload_form')) {
       $result = $this->parse_file($_FILES['euhwc_logo_competition_file']);
@@ -97,9 +95,9 @@ class EUHWCLogoCompetition_Upload {
     }
 
     // Check the user hasn't exceeded the entries limit
-    global $current_user;
+    $num_entries = EUHWCLogoCompetition_Logos::num_entries();
     $max_entries = EUHWCLogoCompetition_Options::max_entries();
-    if (euhwc_logo_competition_get_num_entries($current_user->ID) >= $max_entries) {
+    if ($num_entries >= $max_entries) {
       $result['error'] = 'You\'ve already uploaded '.$max_entries.' logos.';
       return $result;
     }

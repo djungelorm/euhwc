@@ -52,7 +52,8 @@ function euhwc_logo_competition_delete_logo() {
   if (wp_verify_nonce($_POST['euhwc_logo_competition_form_delete_submitted'], 'euhwc_logo_competition_form_delete')) {
     if (isset($_POST['euhwc_logo_competition_image_delete_id'])) {
       if (euhwc_logo_competition_delete_logos($_POST['euhwc_logo_competition_image_delete_id']) > 0) {
-        $out .= '<div class="success">The selected entries have been deleted.</div>';
+        //TODO: output this somehow
+        //$out .= '<div class="success">The selected entries have been deleted.</div>';
         $deleted = true;
       }
     }
@@ -112,10 +113,10 @@ function euhwc_logo_competition_delete_logos($logos) {
         wp_delete_attachment($post_thumbnail_id);
       }
       wp_trash_post($user_image);
-      $images_deleted++;
+      $logos_deleted++;
     }
   }
-  return $images_deleted;
+  return $logos_deleted;
 }
 
 ?>

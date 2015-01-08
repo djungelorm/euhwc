@@ -60,11 +60,11 @@ function euhwc_logo_competition_get_voting_table($year) {
   $out = '<table style="border-bottom: 0px;"><tr>';
 
   // Check if the user has voted
-  $have_voted = false;
+  $has_voted = false;
   foreach ($user_images->posts as $user_image) {
     $vote = in_array($current_user->ID, get_post_meta($user_image->ID, 'logo_competition_vote', false));
     if ($vote) {
-      $have_voted = true;
+      $has_voted = true;
       break;
     }
   }
@@ -89,10 +89,10 @@ function euhwc_logo_competition_get_voting_table($year) {
       $out .= 'You have voted for this logo.</div>';
     } else {
       $out .= '<input type="hidden" name="euhwc_logo_competition_image_vote_id" value="' . $user_image->ID . '" />';
-      if ($voted) {
-        $out .= '<input type="submit" name="euhwc_logo_competition_vote" value="Vote for this logo" />';
-      } else {
+      if ($has_voted) {
         $out .= '<input type="submit" name="euhwc_logo_competition_vote" value="Vote for this logo instead" />';
+      } else {
+        $out .= '<input type="submit" name="euhwc_logo_competition_vote" value="Vote for this logo" />';
       }
       $out .= '</form>';
     }
