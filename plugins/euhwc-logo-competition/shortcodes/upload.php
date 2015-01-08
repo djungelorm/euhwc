@@ -12,7 +12,6 @@ defined('ABSPATH') or die('No script kiddies please!');
 class EUHWCLogoCompetition_Upload {
 
   private $messages = array();
-  private $max_entries = 5;
 
   /** Process an upload form submission */
   public function process() {
@@ -34,17 +33,18 @@ class EUHWCLogoCompetition_Upload {
   /** Generate upload form HTML */
   private function generate_form() {
     global $current_user;
+    $max_entries = EUHWCLogoCompetition_Options::max_entries();
     $out = '';
     $num_entries = euhwc_logo_competition_get_num_entries($current_user->ID);
-    if ($num_entries >= $this->max_entries) {
-      $out .= '<p>You can\'t submit any more logos. It\'s a maximum of '.$this->max_entries.' each!</p>';
+    if ($num_entries >= $max_entries) {
+      $out .= '<p>You can\'t submit any more logos. It\'s a maximum of '.$max_entries.' each!</p>';
     } else {
-      $out = '<p>You can submit up to '.($this->max_entries-$num_entries).' more logos</p>';
+      $out = '<p>You can submit up to '.($max_entries-$num_entries).' more logos</p>';
     }
     foreach ($this->messages as $message) {
       $out .= $message;
     }
-    if ($num_entries < $this->max_entries) {
+    if ($num_entries < $max_entries) {
       $out .= '<form id="euhwc_logo_competition_upload_form" method="post" action="" enctype="multipart/form-data">';
       $out .= wp_nonce_field('euhwc_logo_competition_upload_form', 'euhwc_logo_competition_upload_form_submitted');
       $out .= '<p><input type="file" size="20" name="euhwc_logo_competition_file" id="euhwc_logo_competition_file"> ';
@@ -98,8 +98,9 @@ class EUHWCLogoCompetition_Upload {
 
     // Check the user hasn't exceeded the entries limit
     global $current_user;
-    if (euhwc_logo_competition_get_num_entries($current_user->ID) >= $this->max_entries) {
-      $result['error'] = 'You\'ve already uploaded '.$this->max_entries.' logos.';
+    $max_entries = EUHWCLogoCompetition_Options::max_entries();
+    if (euhwc_logo_competition_get_num_entries($current_user->ID) >= $max_entries) {
+      $result['error'] = 'You\'ve already uploaded '.$max_entries.' logos.';
       return $result;
     }
 
