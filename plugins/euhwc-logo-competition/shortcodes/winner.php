@@ -26,12 +26,27 @@ class EUHWCLogoCompetition_Winner {
     if (count($logos) == 0) {
       return '<div class="failure">No logos were submitted to the competition - so there is no winner!</div>';
     }
-    $winner = $logos[0];
-    $out = '<p>';
-    $out .= $winner->get_attachment_link();
-    $out .= '<br/>';
-    $out .= 'By '.$winner->get_author_display_name();
-    $out .= '</p>';
+
+    $out = '<table style="border-bottom: 0px;"><tr>';
+
+    $i = 0;
+    $num_votes = $logos[0]->get_num_votes();
+    foreach ($logos as $logo) {
+      if ($logo->get_num_votes() < $num_votes) {
+        break;
+      }
+      $out .= '<td style="border-top: 0px;">';
+      $out .= $logo->get_attachment_link();
+      $out .= '<br/>';
+      $out .= 'By ' . $logo->get_author_display_name();
+      $out .= '</td>';
+      $i++;
+      if ($i % 3 == 0)
+        $out .= '</tr><tr>';
+    }
+    $out .= '</tr>';
+
+    $out .= '</table>';
     return $out;
   }
 

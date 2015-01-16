@@ -34,9 +34,9 @@ class EUHWCLogoCompetition_Results {
       $out .= '<td style="border-top: 0px;">';
       $out .= $logo->get_attachment_link();
       $out .= '<br/>';
-      $out .= $logo->get_author_display_name() . ', ';
+      $out .= 'By ' . $logo->get_author_display_name() . ' ';
       $num_votes = $logo->get_num_votes();
-      $out .= $num_votes . ' vote' . ($num_votes == 1 ? '' : 's');
+      $out .= '(' . $num_votes . ' vote' . ($num_votes == 1 ? '' : 's') . ')';
       $out .= '</td>';
       $i++;
       if ($i % 3 == 0)
