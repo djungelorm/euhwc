@@ -32,9 +32,9 @@ class EUHWCLogoCompetition_Logo {
 
   public function delete() {
     if ($post_thumbnail_id = get_post_thumbnail_id($this->post->ID)) {
-      wp_delete_attachment($post_thumbnail_id);
+      wp_delete_attachment($post_thumbnail_id, true);
     }
-    wp_trash_post($this->post->ID);
+    wp_delete_post($this->post->ID, true);
   }
 
   /** Returns true if the user with then given user id has voted for this logo */
