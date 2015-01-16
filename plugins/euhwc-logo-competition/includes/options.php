@@ -10,6 +10,18 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 class EUHWCLogoCompetition_Options {
 
+  public static function max_upload_size() {
+    return 2*1024*1024; // 2MB
+  }
+
+  public static function upload_valid_types() {
+    return array(
+      'image/jpeg',
+      'image/png',
+      'image/gif'
+    );
+  }
+
   public static function max_entries() {
     return get_option('max_entries', 5);
   }

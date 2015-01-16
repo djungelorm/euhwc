@@ -136,18 +136,13 @@ class EUHWCLogoCompetition_Logos {
     }
 
     // Check the type and size of the image
-    //TODO: move to options
-    $max_upload_size = 2*1024*1024;
-    $type_whitelist = serialize(array(
-      'image/jpeg',
-      'image/png',
-      'image/gif'
-    ));
+    $max_size = EUHWCLogoCompetition_Options::max_upload_size();
+    $valid_types = EUHWCLogoCompetition_Options::upload_valid_types();
     $image_data = getimagesize($file['tmp_name']);
-    if (!in_array($image_data['mime'], unserialize($type_whitelist))) {
-      return 'Your logo must be a jpeg, png or gif.';
-    } elseif(($file['size'] > $max_upload_size)) {
-      return 'Your image was too large. It can be at most 2MB.';
+    if (!in_array($image_data['mime'], $valid_types)) {
+      return 'Your logo must be in JPEG, PNG or GIF format.';
+    } elseif(($file['size'] > $max_size)) {
+      return 'Your image was too large. It can be at most '.size_format($max_size).'.';
     }
 
     return true;
