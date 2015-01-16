@@ -136,10 +136,11 @@ class EUHWCLogoCompetition_Logos {
 
     // Check the type and size of the image
     $max_size = EUHWCLogoCompetition_Options::max_upload_size();
-    $valid_types = EUHWCLogoCompetition_Options::upload_valid_types();
+    $valid_formats = EUHWCLogoCompetition_Options::upload_valid_formats();
     $image_data = getimagesize($file['tmp_name']);
-    if (!in_array($image_data['mime'], $valid_types)) {
-      return 'Your logo must be in JPEG, PNG or GIF format.';
+    if (!in_array($image_data['mime'], $valid_formats)) {
+      $formats = EUHWCLogoCompetition_Options::upload_valid_formats_human_readable();
+      return 'Your logo must be in '.$formats.' format.';
     } elseif(($file['size'] > $max_size)) {
       return 'Your image was too large. It can be at most '.size_format($max_size).'.';
     }

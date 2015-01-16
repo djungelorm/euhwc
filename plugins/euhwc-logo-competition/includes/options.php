@@ -18,12 +18,20 @@ class EUHWCLogoCompetition_Options {
     return min($max_upload, $max_post, $memory_limit);
   }
 
-  public static function upload_valid_types() {
+  public static function upload_valid_formats() {
     return array(
       'image/jpeg',
       'image/png',
       'image/gif'
     );
+  }
+
+  public static function upload_valid_formats_human_readable() {
+    $formats = array();
+    foreach (self::upload_valid_formats() as $format) {
+      array_push($formats, strtoupper(explode('/',$format)[1]));
+    }
+    return join(array_slice($formats, 0, -1), ', ').' or '.$formats[count($formats)-1];
   }
 
   public static function max_entries() {

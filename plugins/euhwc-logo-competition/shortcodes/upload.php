@@ -45,7 +45,8 @@ class EUHWCLogoCompetition_Upload {
         $out = 'You can submit 1 more logo.';
       }
       $max_size = EUHWCLogoCompetition_Options::max_upload_size();
-      $out .= ' Files must be smaller than '.size_format($max_size).' and be in JPEG, PNG or GIF format.</p>';
+      $formats = EUHWCLogoCompetition_Options::upload_valid_formats_human_readable();
+      $out .= ' Files must be smaller than '.size_format($max_size).' and be in '.$formats.' format.</p>';
     }
     foreach ($this->messages as $message) {
       $out .= $message;
