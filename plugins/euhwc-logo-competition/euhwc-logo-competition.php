@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Logo Competition
 Description: Provides shortcodes to run a logo competition.
-Version: 1.1
+Version: 1.2
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
