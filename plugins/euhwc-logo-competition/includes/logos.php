@@ -75,7 +75,6 @@ class EUHWCLogoCompetition_Logos {
 
   /** Get a logo based on its post id. */
   public static function get_logo_by_id($post_id) {
-    //TODO: validation of id?
     return new EUHWCLogoCompetition_Logo(get_post($post_id));
   }
 

@@ -13,6 +13,7 @@ class EUHWCLogoCompetition_Logo {
   public $post;
 
   public function __construct($post) {
+    assert($post->post_type == 'euhwc_logocomp_entry');
     $this->post = $post;
   }
 
