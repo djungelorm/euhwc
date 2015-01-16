@@ -97,7 +97,6 @@ class EUHWCLogoCompetition_Logos {
     }
 
     // Create a post
-    //TODO: error checking
     $data = array(
       'post_title' => $user->display_name.' ('.$_FILES[$file_id]['name'].')',
       'post_status' => 'publish',
@@ -105,6 +104,7 @@ class EUHWCLogoCompetition_Logos {
       'post_type' => 'euhwc_logocomp_entry'
     );
     $post_id = wp_insert_post($data);
+    assert($post_id != 0);
 
     // Attach the image to the post
     require_once(ABSPATH . 'wp-admin/includes/image.php');
