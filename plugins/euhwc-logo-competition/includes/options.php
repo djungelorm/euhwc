@@ -19,7 +19,7 @@ class EUHWCLogoCompetition_Options {
     add_settings_section(
       'euhwc_logo_competition_setting_section',
       'General Settings',
-      none,
+      NULL,
       'euhwc_logo_competition'
     );
 

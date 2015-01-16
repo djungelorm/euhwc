@@ -42,23 +42,115 @@ class EUHWCLogoCompetition_Logos {
     register_post_type('euhwc_logocomp_entry', $args);
   }
 
-  /** Get the number of logos that a user has submitted. By default, for the current year. */
-  public static function num_entries($user_id = null, $year = null) {
-    global $current_user;
-    if ($user_id === null) {
-      $user_id = $current_user->ID;
-    }
+  /**
+   * Get the logos that have been submitted. By default, for the current year and for all users.
+   * If sorted is true, they are sorted in descending order of votes.
+   */
+  public static function get($year = null, $user_id = null, $sorted = false) {
     if ($year === null) {
       $year = date('Y');
     }
     $args = array(
-      'author' => $user_id,
       'post_type' => 'euhwc_logocomp_entry',
       'post_status' => 'publish',
       'year' => $year
     );
-    $user_images = new WP_Query($args);
-    return $user_images->post_count;
+    if ($user_id !== null) {
+      $args['author'] = $user_id;
+    }
+    $posts = new WP_Query($args);
+    $f = function ($post) {
+      return new EUHWCLogoCompetition_Logo($post);
+    };
+    // Sort logos in descending order of votes
+    $result = array_map($f, $posts->posts);
+    if ($sorted) {
+      $f = function ($a, $b) {
+        return $b->get_num_votes() - $a->get_num_votes();
+      };
+      usort($result, $f);
+    }
+    return $result;
+  }
+
+  /** Get a logo based on its post id. */
+  public static function get_logo_by_id($post_id) {
+    //TODO: validation of id?
+    return new EUHWCLogoCompetition_Logo(get_post($post_id));
+  }
+
+  /**
+   * Add a logo. user is the user object of the author, file_id is an index into
+   * the $_FILES array for the uploaded file.
+   */
+  public static function add($user, $file_id) {
+    // Check the user hasn't exceeded the entries limit
+    $num_entries = count(self::get(null, $user->ID));
+    $max_entries = EUHWCLogoCompetition_Options::max_entries();
+    if ($num_entries >= $max_entries) {
+      return 'You\'ve already uploaded '.$max_entries.' logos.';
+    }
+
+    // Validate the file upload
+    $result = self::validate_upload($_FILES[$file_id]);
+    if ($result !== true) {
+      return $result;
+    }
+
+    // Create a post
+    //TODO: error checking
+    $data = array(
+      'post_title' => $user->display_name.' ('.$_FILES[$file_id]['name'].')',
+      'post_status' => 'publish',
+      'post_author' => $user->ID,
+      'post_type' => 'euhwc_logocomp_entry'
+    );
+    $post_id = wp_insert_post($data);
+
+    // Attach the image to the post
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    require_once(ABSPATH . 'wp-admin/includes/media.php');
+    $attachment_id = media_handle_upload($file_id, $post_id);
+    update_post_meta($post_id, '_thumbnail_id', $attachment_id);
+    $attachment_data = array(
+      'ID' => $attachment_id,
+      'post_excerpt' => ''
+    );
+    wp_update_post($attachment_data);
+
+    return true;
+  }
+
+  /** Check a file upload request is valid and return a result array summarising the submission */
+  private static function validate_upload($file) {
+    // Check for upload errors
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+      if ($file['error'] === UPLOAD_ERR_INI_SIZE || $file['error'] === UPLOAD_ERR_FORM_SIZE) {
+        return 'Your image was too large.';
+      } else if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return 'Please choose a file and try again.';
+      } else {
+        return 'There was an error uploading your file!';
+      }
+    }
+
+    // Check the type and size of the image
+    //TODO: move to options
+    $max_upload_size = 2*1024*1024;
+    $type_whitelist = serialize(array(
+      'image/jpeg',
+      'image/png',
+      'image/gif'
+    ));
+    $image_data = getimagesize($file['tmp_name']);
+    if (!in_array($image_data['mime'], unserialize($type_whitelist))) {
+      return 'Your logo must be a jpeg, png or gif.';
+    } elseif(($file['size'] > $max_upload_size)) {
+      return 'Your image was too large. It can be at most 2MB.';
+    }
+
+    return true;
   }
 
 }
