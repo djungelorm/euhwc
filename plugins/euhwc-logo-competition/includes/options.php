@@ -11,7 +11,11 @@ defined('ABSPATH') or die('No script kiddies please!');
 class EUHWCLogoCompetition_Options {
 
   public static function max_upload_size() {
-    return 2*1024*1024; // 2MB
+    $mb = 1024*1024;
+    $max_upload = (int)(ini_get('upload_max_filesize')) * $mb;
+    $max_post = (int)(ini_get('post_max_size')) * $mb;
+    $memory_limit = (int)(ini_get('memory_limit')) * $mb;
+    return min($max_upload, $max_post, $memory_limit);
   }
 
   public static function upload_valid_types() {
