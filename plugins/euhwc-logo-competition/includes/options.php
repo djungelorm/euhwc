@@ -10,6 +10,30 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 class EUHWCLogoCompetition_Options {
 
+  public static function max_upload_size() {
+    $mb = 1024*1024;
+    $max_upload = (int)(ini_get('upload_max_filesize')) * $mb;
+    $max_post = (int)(ini_get('post_max_size')) * $mb;
+    $memory_limit = (int)(ini_get('memory_limit')) * $mb;
+    return min($max_upload, $max_post, $memory_limit);
+  }
+
+  public static function upload_valid_formats() {
+    return array(
+      'image/jpeg',
+      'image/png',
+      'image/gif'
+    );
+  }
+
+  public static function upload_valid_formats_human_readable() {
+    $formats = array();
+    foreach (self::upload_valid_formats() as $format) {
+      array_push($formats, strtoupper(explode('/',$format)[1]));
+    }
+    return join(array_slice($formats, 0, -1), ', ').' or '.$formats[count($formats)-1];
+  }
+
   public static function max_entries() {
     return get_option('max_entries', 5);
   }

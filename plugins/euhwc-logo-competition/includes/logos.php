@@ -32,12 +32,17 @@ class EUHWCLogoCompetition_Logos {
       'has_archive' => true,
       'query_var' => true,
       'rewrite' => true,
-      'capability_type' => 'post',
+      'capability_type' => 'logo',
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
       'supports' => array('title', 'author', 'thumbnail')
     );
+
+    $role = get_role('administrator');
+    $role->add_cap('add_logos');
+    $role->add_cap('edit_logos');
+    $role->add_cap('delete_logos');
 
     register_post_type('euhwc_logocomp_entry', $args);
   }
@@ -75,7 +80,6 @@ class EUHWCLogoCompetition_Logos {
 
   /** Get a logo based on its post id. */
   public static function get_logo_by_id($post_id) {
-    //TODO: validation of id?
     return new EUHWCLogoCompetition_Logo(get_post($post_id));
   }
 
@@ -98,7 +102,6 @@ class EUHWCLogoCompetition_Logos {
     }
 
     // Create a post
-    //TODO: error checking
     $data = array(
       'post_title' => $user->display_name.' ('.$_FILES[$file_id]['name'].')',
       'post_status' => 'publish',
@@ -106,6 +109,7 @@ class EUHWCLogoCompetition_Logos {
       'post_type' => 'euhwc_logocomp_entry'
     );
     $post_id = wp_insert_post($data);
+    assert($post_id != 0);
 
     // Attach the image to the post
     require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -136,18 +140,14 @@ class EUHWCLogoCompetition_Logos {
     }
 
     // Check the type and size of the image
-    //TODO: move to options
-    $max_upload_size = 2*1024*1024;
-    $type_whitelist = serialize(array(
-      'image/jpeg',
-      'image/png',
-      'image/gif'
-    ));
+    $max_size = EUHWCLogoCompetition_Options::max_upload_size();
+    $valid_formats = EUHWCLogoCompetition_Options::upload_valid_formats();
     $image_data = getimagesize($file['tmp_name']);
-    if (!in_array($image_data['mime'], unserialize($type_whitelist))) {
-      return 'Your logo must be a jpeg, png or gif.';
-    } elseif(($file['size'] > $max_upload_size)) {
-      return 'Your image was too large. It can be at most 2MB.';
+    if (!in_array($image_data['mime'], $valid_formats)) {
+      $formats = EUHWCLogoCompetition_Options::upload_valid_formats_human_readable();
+      return 'Your logo must be in '.$formats.' format.';
+    } elseif(($file['size'] > $max_size)) {
+      return 'Your image was too large. It can be at most '.size_format($max_size).'.';
     }
 
     return true;
