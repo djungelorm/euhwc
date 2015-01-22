@@ -48,14 +48,29 @@ class EUHWCLogoCompetition_Admin {
 
   /** Render input field for vote string */
   function votes_box_callback($post) {
-    wp_nonce_field('euhwc_logo_competition_meta_box', 'euhwc_logo_competition_meta_box_nonce' );
-    $value = get_post_meta($post->ID, 'logo_competition_vote', true);
-    echo '<label for="euhwc_logo_competition_votes">';
-    echo 'Vote string (DO NOT EDIT)';
-    echo '</label> ';
-    echo '<input type="text" id="euhwc_logo_competition_votes" name="euhwc_logo_competition_votes" value="' . esc_attr($value) . '" size="25" />';
+    $values = get_post_meta($post->ID, 'logo_competition_vote', false);
+    $votes = count($values);
+    if ($votes == 0) {
+      echo '<p>There are no votes for this logo.</p>';
+    } else {
+      if ($votes == 1) {
+        echo '<p>There is 1 vote, by the following person:</p>';
+      } else {
+        echo '<p>There are' . $votes . ' votes, by the following people:</p>';
+      }
+      echo '<select multiple="multiple" size="5">';
+      foreach ($values as $uid) {
+        $user = get_userdata($uid);
+        if ($user === false) {
+          $name = 'Unknown user';
+        } else {
+          $name = $user->display_name;
+        }
+        echo '<option>' . esc_attr($name) . '</option>';
+      }
+      echo '</select>';
+    }
   }
-
 }
 
 $admin = new EUHWCLogoCompetition_Admin;
