@@ -57,7 +57,7 @@ class EUHWCLogoCompetition_Admin {
       if ($votes == 1) {
         echo '<p>There is 1 vote, by the following person:</p>';
       } else {
-        echo '<p>There are' . $votes . ' votes, by the following people:</p>';
+        echo '<p>There are ' . $votes . ' votes, by the following people:</p>';
       }
       echo '<select multiple="multiple" size="5">';
       foreach ($values as $uid) {
