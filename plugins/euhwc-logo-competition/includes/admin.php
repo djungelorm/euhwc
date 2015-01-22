@@ -42,7 +42,8 @@ class EUHWCLogoCompetition_Admin {
       'euhwc_logo_competition_votes',
       __('Votes'),
       array($this, 'votes_box_callback'),
-      'euhwc_logocomp_entry'
+      'euhwc_logocomp_entry',
+      'side'
     );
   }
 
