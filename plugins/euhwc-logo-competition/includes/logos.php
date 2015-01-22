@@ -32,12 +32,17 @@ class EUHWCLogoCompetition_Logos {
       'has_archive' => true,
       'query_var' => true,
       'rewrite' => true,
-      'capability_type' => 'post',
+      'capability_type' => 'logo',
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
       'supports' => array('title', 'author', 'thumbnail')
     );
+
+    $role = get_role('administrator');
+    $role->add_cap('add_logos');
+    $role->add_cap('edit_logos');
+    $role->add_cap('delete_logos');
 
     register_post_type('euhwc_logocomp_entry', $args);
   }
