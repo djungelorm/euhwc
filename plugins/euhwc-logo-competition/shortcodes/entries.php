@@ -96,7 +96,7 @@ class EUHWCLogoCompetition_Entries {
 }
 
 $entries = new EUHWCLogoCompetition_Entries;
-add_action('init', array($entries, 'process'));
+add_action('the_post', array($entries, 'process'));
 add_shortcode('euhwc_logo_competition_entries', array($entries, 'shortcode'));
 
 ?>

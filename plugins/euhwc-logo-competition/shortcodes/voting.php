@@ -107,7 +107,7 @@ class EUHWCLogoCompetition_Voting {
 }
 
 $voting = new EUHWCLogoCompetition_Voting;
-add_action('init', array($voting, 'process'));
+add_action('the_post', array($voting, 'process'));
 add_shortcode('euhwc_logo_competition_voting', array($voting, 'shortcode'));
 
 ?>
