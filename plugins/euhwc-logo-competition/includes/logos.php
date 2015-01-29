@@ -87,19 +87,14 @@ class EUHWCLogoCompetition_Logos {
     if ($user_id !== null) {
       $args['author'] = $user_id;
     }
+    if ($sorted) {
+      $args['orderby'] = 'votes';
+    }
     $posts = new WP_Query($args);
     $f = function ($post) {
       return new EUHWCLogoCompetition_Logo($post);
     };
-    // Sort logos in descending order of votes
-    $result = array_map($f, $posts->posts);
-    if ($sorted) {
-      $f = function ($a, $b) {
-        return $b->get_num_votes() - $a->get_num_votes();
-      };
-      usort($result, $f);
-    }
-    return $result;
+    return array_map($f, $posts->posts);
   }
 
   /** Get a logo based on its post id. */
