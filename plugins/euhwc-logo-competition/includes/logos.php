@@ -130,6 +130,9 @@ class EUHWCLogoCompetition_Logos {
     $post_id = wp_insert_post($data);
     assert($post_id != 0);
 
+    // Set initial meta data
+    add_post_meta($post_id, 'logo_competition_num_votes', 0);
+
     // Attach the image to the post
     require_once(ABSPATH . 'wp-admin/includes/image.php');
     require_once(ABSPATH . 'wp-admin/includes/file.php');

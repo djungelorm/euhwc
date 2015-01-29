@@ -57,14 +57,16 @@ class EUHWCLogoCompetition_Logo {
     $result = add_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
     // Update the vote count
     $this->update_num_votes();
+    return $result;
   }
 
   /** Clear the users vote for this logo */
   public function clear_vote($user_id) {
     // Remove the uid from the vote list
-    delete_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
+    $result = delete_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
     // Update the vote count
     $this->update_num_votes();
+    return $result;
   }
 
   /** Update the num_votes meta data from the votes list */
