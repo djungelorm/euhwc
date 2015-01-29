@@ -17,8 +17,12 @@ class EUHWCLogoCompetition_Logo {
     $this->post = $post;
   }
 
+  public function get_votes() {
+    return get_post_meta($this->post->ID, 'logo_competition_vote', false);
+  }
+
   public function get_num_votes() {
-    return count(get_post_meta($this->post->ID, 'logo_competition_vote', false));
+    return count($this->get_votes());
   }
 
   public function get_attachment_link() {

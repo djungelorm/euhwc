@@ -49,18 +49,19 @@ class EUHWCLogoCompetition_Admin {
 
   /** Render input field for vote string */
   function votes_box_callback($post) {
-    $values = get_post_meta($post->ID, 'logo_competition_vote', false);
-    $votes = count($values);
-    if ($votes == 0) {
+    $logo = new EUHWCLogoCompetition_Logo($post);
+    $votes = $logo->get_votes();
+    $num_votes = count($votes);
+    if ($num_votes == 0) {
       echo '<p>There are no votes for this logo.</p>';
     } else {
-      if ($votes == 1) {
+      if ($num_votes == 1) {
         echo '<p>There is 1 vote, by the following person:</p>';
       } else {
-        echo '<p>There are ' . $votes . ' votes, by the following people:</p>';
+        echo '<p>There are ' . $num_votes . ' votes, by the following people:</p>';
       }
       echo '<select multiple="multiple" size="5">';
-      foreach ($values as $uid) {
+      foreach ($votes as $uid) {
         $user = get_userdata($uid);
         if ($user === false) {
           $name = 'Unknown user';
