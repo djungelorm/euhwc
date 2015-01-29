@@ -78,7 +78,7 @@ class EUHWCLogoCompetition_Upload {
 }
 
 $upload = new EUHWCLogoCompetition_Upload;
-add_action('init', array($upload, 'process'));
+add_action('the_post', array($upload, 'process'));
 add_shortcode('euhwc_logo_competition_upload', array($upload, 'shortcode'));
 
 ?>

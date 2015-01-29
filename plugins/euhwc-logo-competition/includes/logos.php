@@ -41,10 +41,34 @@ class EUHWCLogoCompetition_Logos {
 
     $role = get_role('administrator');
     $role->add_cap('add_logos');
+
+    $role->add_cap('publish_logos');
+
     $role->add_cap('edit_logos');
+    $role->add_cap('edit_others_logos');
+    $role->add_cap('edit_private_logos');
+    $role->add_cap('edit_published_logos');
+
     $role->add_cap('delete_logos');
+    $role->add_cap('delete_others_logos');
+    $role->add_cap('delete_private_logos');
+    $role->add_cap('delete_published_logos');
+
+    $role->add_cap('read_others_logos');
+    $role->add_cap('read_private_logos');
 
     register_post_type('euhwc_logocomp_entry', $args);
+  }
+
+  /** Allowing sorting logos by votes in a WP_Query */
+  public function orderby_votes($query) {
+    if ($query->get('post_type') != 'euhwc_logocomp_entry')
+      return;
+    $orderby = $query->get('orderby');
+    if ($orderby == 'votes') {
+      $query->set('meta_key', 'logo_competition_num_votes');
+      $query->set('orderby', 'meta_value_num');
+    }
   }
 
   /**
@@ -63,19 +87,14 @@ class EUHWCLogoCompetition_Logos {
     if ($user_id !== null) {
       $args['author'] = $user_id;
     }
+    if ($sorted) {
+      $args['orderby'] = 'votes';
+    }
     $posts = new WP_Query($args);
     $f = function ($post) {
       return new EUHWCLogoCompetition_Logo($post);
     };
-    // Sort logos in descending order of votes
-    $result = array_map($f, $posts->posts);
-    if ($sorted) {
-      $f = function ($a, $b) {
-        return $b->get_num_votes() - $a->get_num_votes();
-      };
-      usort($result, $f);
-    }
-    return $result;
+    return array_map($f, $posts->posts);
   }
 
   /** Get a logo based on its post id. */
@@ -110,6 +129,9 @@ class EUHWCLogoCompetition_Logos {
     );
     $post_id = wp_insert_post($data);
     assert($post_id != 0);
+
+    // Set initial meta data
+    add_post_meta($post_id, 'logo_competition_num_votes', 0);
 
     // Attach the image to the post
     require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -157,5 +179,6 @@ class EUHWCLogoCompetition_Logos {
 
 $logos = new EUHWCLogoCompetition_Logos;
 add_action('init', array($logos, 'register_post_type'));
+add_action('pre_get_posts', array($logos, 'orderby_votes'));
 
 ?>

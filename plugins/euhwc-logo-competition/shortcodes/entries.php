@@ -77,7 +77,7 @@ class EUHWCLogoCompetition_Entries {
       $out .= wp_nonce_field('euhwc_logo_competition_image_delete_' . $logo->post->ID, 'euhwc_logo_competition_image_delete_id_' . $logo->post->ID, false);
       $out .= $logo->get_attachment_link();
       $out .= '<br/>';
-      $out .= '<input type="checkbox" name="euhwc_logo_competition_image_delete_id[]" value="' . $logo->post->ID . '" /> Mark for deletion';
+      $out .= '<input type="checkbox" name="euhwc_logo_competition_image_delete_id[]" value="' . $logo->post->ID . '" id="euhwc_logo_competition_image_delete_'.$logo->post->ID.'"/> <label for="euhwc_logo_competition_image_delete_'.$logo->post->ID.'">Mark for deletion</label>';
       $out .= '</td>';
       $i++;
       if ($i % 3 == 0)
@@ -96,7 +96,7 @@ class EUHWCLogoCompetition_Entries {
 }
 
 $entries = new EUHWCLogoCompetition_Entries;
-add_action('init', array($entries, 'process'));
+add_action('the_post', array($entries, 'process'));
 add_shortcode('euhwc_logo_competition_entries', array($entries, 'shortcode'));
 
 ?>
