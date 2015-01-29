@@ -60,6 +60,17 @@ class EUHWCLogoCompetition_Logos {
     register_post_type('euhwc_logocomp_entry', $args);
   }
 
+  /** Allowing sorting logos by votes in a WP_Query */
+  public function orderby_votes($query) {
+    if ($query->get('post_type') != 'euhwc_logocomp_entry')
+      return;
+    $orderby = $query->get('orderby');
+    if ($orderby == 'votes') {
+      $query->set('meta_key', 'logo_competition_num_votes');
+      $query->set('orderby', 'meta_value_num');
+    }
+  }
+
   /**
    * Get the logos that have been submitted. By default, for the current year and for all users.
    * If sorted is true, they are sorted in descending order of votes.
@@ -170,5 +181,6 @@ class EUHWCLogoCompetition_Logos {
 
 $logos = new EUHWCLogoCompetition_Logos;
 add_action('init', array($logos, 'register_post_type'));
+add_action('pre_get_posts', array($logos, 'orderby_votes'));
 
 ?>

@@ -36,6 +36,28 @@ class EUHWCLogoCompetition_Admin {
     add_meta_box('postimagediv', __('Logo'), 'post_thumbnail_meta_box', 'euhwc_logocomp_entry', 'normal', 'high');
   }
 
+  /** Add votes column to admin pages */
+  public function manage_edit_columns($columns) {
+    $first_columns = array_splice($columns, 0, 3);
+    $columns = array_merge($first_columns, array('votes' => __('Votes')), $columns);
+    return $columns;
+  }
+
+  /** Add contents for votes column on admin pages */
+  public function manage_posts_custom_column($column) {
+    global $post;
+    if ($column == 'votes') {
+      $logo = new EUHWCLogoCompetition_Logo($post);
+      echo $logo->get_num_votes();
+    }
+  }
+
+  /** Make votes column sortable */
+  public function manage_edit_sortable_columns($columns) {
+    $columns['votes'] = 'votes';
+    return $columns;
+  }
+
   /** Add vote string box to edit/add admin pages */
   public function votes_box() {
     add_meta_box(
@@ -77,6 +99,9 @@ class EUHWCLogoCompetition_Admin {
 
 $admin = new EUHWCLogoCompetition_Admin;
 add_action('admin_menu', array($admin, 'options_menu'));
+add_action('manage_edit-euhwc_logocomp_entry_columns', array($admin, 'manage_edit_columns'));
+add_action('manage_euhwc_logocomp_entry_posts_custom_column', array($admin, 'manage_posts_custom_column'));
+add_action('manage_edit-euhwc_logocomp_entry_sortable_columns', array($admin, 'manage_edit_sortable_columns'));
 add_action('do_meta_boxes', array($admin, 'image_box'));
 add_action('add_meta_boxes', array($admin, 'votes_box'));
 

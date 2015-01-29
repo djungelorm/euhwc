@@ -22,7 +22,7 @@ class EUHWCLogoCompetition_Logo {
   }
 
   public function get_num_votes() {
-    return count($this->get_votes());
+    return intval(get_post_meta($this->post->ID, 'logo_competition_num_votes', true));
   }
 
   public function get_attachment_link() {
@@ -51,12 +51,27 @@ class EUHWCLogoCompetition_Logo {
     // Clear all the users current votes
     $logos = EUHWCLogoCompetition_Logos::get($year);
     foreach ($logos as $logo) {
-      delete_post_meta($logo->post->ID, 'logo_competition_vote', $user_id);
+      $logo->clear_vote($user_id);
     }
     // Add the new vote
-    return add_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
+    $result = add_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
+    // Update the vote count
+    $this->update_num_votes();
   }
 
+  /** Clear the users vote for this logo */
+  public function clear_vote($user_id) {
+    // Remove the uid from the vote list
+    delete_post_meta($this->post->ID, 'logo_competition_vote', $user_id);
+    // Update the vote count
+    $this->update_num_votes();
+  }
+
+  /** Update the num_votes meta data from the votes list */
+  private function update_num_votes() {
+    $n = count($this->get_votes());
+    update_post_meta($this->post->ID, 'logo_competition_num_votes', $n);
+  }
 }
 
 ?>
