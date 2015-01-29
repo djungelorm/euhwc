@@ -32,12 +32,32 @@ class EUHWCPhotoCompetition_Photos {
       'has_archive' => true,
       'query_var' => true,
       'rewrite' => true,
-      'capability_type' => 'post',
+      'capability_type' => 'photo',
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
-      'supports' => array('title', 'author')
+      'supports' => array('title', 'author', 'thumbnail')
     );
+    register_post_type('euhwc_pcomp_photo', $args);
+
+    $role = get_role('administrator');
+    $role->add_cap('add_photos');
+
+    $role->add_cap('publish_photos');
+
+    $role->add_cap('edit_photos');
+    $role->add_cap('edit_others_photos');
+    $role->add_cap('edit_private_photos');
+    $role->add_cap('edit_published_photos');
+
+    $role->add_cap('delete_photos');
+    $role->add_cap('delete_others_photos');
+    $role->add_cap('delete_private_photos');
+    $role->add_cap('delete_published_photos');
+
+    $role->add_cap('read_others_photos');
+    $role->add_cap('read_private_photos');
+
     register_post_type('euhwc_pcomp_photo', $args);
   }
 
