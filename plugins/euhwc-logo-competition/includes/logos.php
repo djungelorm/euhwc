@@ -41,8 +41,21 @@ class EUHWCLogoCompetition_Logos {
 
     $role = get_role('administrator');
     $role->add_cap('add_logos');
+
+    $role->add_cap('publish_logos');
+
     $role->add_cap('edit_logos');
+    $role->add_cap('edit_others_logos');
+    $role->add_cap('edit_private_logos');
+    $role->add_cap('edit_published_logos');
+
     $role->add_cap('delete_logos');
+    $role->add_cap('delete_others_logos');
+    $role->add_cap('delete_private_logos');
+    $role->add_cap('delete_published_logos');
+
+    $role->add_cap('read_others_logos');
+    $role->add_cap('read_private_logos');
 
     register_post_type('euhwc_logocomp_entry', $args);
   }
