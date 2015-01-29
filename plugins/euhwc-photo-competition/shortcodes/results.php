@@ -24,14 +24,19 @@ class EUHWCPhotoCompetition_Results {
   private function generate_table($year) {
     $out = '';
     $categories = EUHWCPhotoCompetition_Categories::get();
+
+    if (count($categories) == 0) {
+      return '<div class="error">There are no categories configured.</div>';
+    }
+
     foreach ($categories as $category) {
 
       $out .= '<h2 style="display: inline; margin-right: 1em;">' . $category->term->name . '</h2>';
-      $out .= $category->term->description;
+      $out .= '<p>'.$category->term->description.'</p>';
 
       $photos = EUHWCPhotoCompetition_Photos::get($category, $year, null, true);
       if (count($photos) == 0) {
-        $out .= '<div class="fail">No logos were submitted to this category - so there are no results!</div>';
+        $out .= '<div class="error">No logos were submitted to this category - so there are no results!</div>';
       } else {
         $photos = array_slice($photos, 0, 3);
         $names = array('Winner', 'Second', 'Third');

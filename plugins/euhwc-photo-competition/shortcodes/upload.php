@@ -73,6 +73,10 @@ class EUHWCPhotoCompetition_Upload {
     $categories = EUHWCPhotoCompetition_Categories::get();
     $photos_per_row = 3;
 
+    if (count($categories) == 0) {
+      return '<div class="error">There are no categories configured.</div>';
+    }
+
     $out .= '<form id="euhwc_photo_competition_upload_form" method="post" action="" enctype="multipart/form-data">';
     $out .= wp_nonce_field('euhwc_photo_competition_upload_form', 'euhwc_photo_competition_upload_form_submitted');
 

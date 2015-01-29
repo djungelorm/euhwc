@@ -69,19 +69,20 @@ class EUHWCPhotoCompetition_Voting {
     $max_votes = EUHWCPhotoCompetition_Options::max_votes_per_category();
     $categories = EUHWCPhotoCompetition_Categories::get();
 
+    if (count($categories) == 0) {
+      return '<div class="error">There are no categories configured.</div>';
+    }
+
     foreach ($categories as $category) {
       $out .= '<h2 style="display: inline; margin-right: 1em;">' . $category->term->name . '</h2>';
-      $out .= $category->term->description;
+      $out .= '<p>'.$category->term->description.'</p>';
 
       $votes = $category->get_photos_voted_for($current_user->ID, $year);
 
-      $out .= '<table><tr>';
-      $out .= '<td colspan="2">';
-      $out .= '<p>You have voted for <b>'.count($votes).' out of '.$max_votes.'</b> photos in this category.<br/>';
+      $out .= '<p>You have voted for <b>'.count($votes).' out of '.$max_votes.'</b> photos in this category. ';
       $out .= '<b><a href="'.esc_url(add_query_arg('category', $category->term->slug)).'">'.(count($votes) == 0 ? 'Place' : 'Update').' my Vote</a></b></p>';
-      $out .= '</td>';
-      $out .= '</tr><tr>';
 
+      $out .= '<table><tr>';
       foreach ($votes as $photo) {
         $out .= '<td align="center">';
         $out .= $photo->get_attachment_link();
@@ -92,7 +93,6 @@ class EUHWCPhotoCompetition_Voting {
         $out .= '<img src="' . plugins_url('images/placeholder.png', dirname(__FILE__)) . '" style=" border-style: solid; border-width: 1px; border-color: #777; margin: 0.3em;"/>';
         $out .= '</td>';
       }
-
       $out .= '</tr></table>';
     }
     return $out;
@@ -139,35 +139,37 @@ function check_votes() {
 
     $out .= '<p>To vote, select the photos you want to vote for and then click save. You can view a larger version of each photo by clicking on it.</p>';
 
-    $out .= '<p><input type="submit" name="submit" value="Save my Vote"/></p>';
-
-    $out .= '<table><tr>';
-
     // Shuffle the photos into a stable random order
     $photos = EUHWCPhotoCompetition_Photos::get($category, $year, null, false, true);
 
-    $i = 0;
-    foreach ($photos as $photo) {
-      $checked = '';
-      $background = '#fff';
-      if ($photo->has_users_vote($current_user->ID)) {
-        $checked = ' checked="checked"';
-        $background = '#8f8';
-      }
+    if (count($photos) == 0) {
+      $out .= '<div class="error">There are no photos in this category!</div>';
+    } else {
+      $out .= '<p><input type="submit" name="submit" value="Save my Vote"/></p>';
 
-      $out .= '<td align="center" id="euhwc_photo_competition_photo_td_'.$photo->post->ID.'" style="text-align: center; background-color: '.$background.';">';
-      $out .= $photo->get_attachment_link();
-      $out .= '<br/><input type="checkbox"'.$checked.' name="euhwc_photo_competition_vote[]" value="'.$photo->post->ID.'" id="euhwc_photo_competition_photo_'.$photo->post->ID.'" onclick="document.getElementById(\'euhwc_photo_competition_photo_td_'.$photo->post->ID.'\').style.backgroundColor = (document.getElementById(\'euhwc_photo_competition_photo_'.$photo->post->ID.'\').checked ? \'#8f8\' : \'#fff\');"/>';
-      $out .= ' <label for="euhwc_photo_competition_photo_'.$photo->post->ID.'">Choose this photo</label>';
-      $out .= '</td>';
+      $out .= '<table><tr>';
+      $i = 0;
+      foreach ($photos as $photo) {
+        $checked = '';
+        $background = '#fff';
+        if ($photo->has_users_vote($current_user->ID)) {
+          $checked = ' checked="checked"';
+          $background = '#8f8';
+        }
 
-      $i++;
-      if ($i % $photos_per_row == 0) {
-        $out .= '</tr><tr style="border-top: 1px solid #777;">';
+        $out .= '<td align="center" id="euhwc_photo_competition_photo_td_'.$photo->post->ID.'" style="text-align: center; background-color: '.$background.';">';
+        $out .= $photo->get_attachment_link();
+        $out .= '<br/><input type="checkbox"'.$checked.' name="euhwc_photo_competition_vote[]" value="'.$photo->post->ID.'" id="euhwc_photo_competition_photo_'.$photo->post->ID.'" onclick="document.getElementById(\'euhwc_photo_competition_photo_td_'.$photo->post->ID.'\').style.backgroundColor = (document.getElementById(\'euhwc_photo_competition_photo_'.$photo->post->ID.'\').checked ? \'#8f8\' : \'#fff\');"/>';
+        $out .= ' <label for="euhwc_photo_competition_photo_'.$photo->post->ID.'">Choose this photo</label>';
+        $out .= '</td>';
+
+        $i++;
+        if ($i % $photos_per_row == 0) {
+          $out .= '</tr><tr style="border-top: 1px solid #777;">';
+        }
       }
+      $out .= '</tr></table></form>';
     }
-
-    $out .= '</tr></table></form>';
     return $out;
   }
 
