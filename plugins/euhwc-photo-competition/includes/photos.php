@@ -36,6 +36,7 @@ class EUHWCPhotoCompetition_Photos {
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
+      'menu_icon' => 'dashicons-format-gallery',
       'supports' => array('title', 'author', 'thumbnail')
     );
     register_post_type('euhwc_pcomp_photo', $args);
