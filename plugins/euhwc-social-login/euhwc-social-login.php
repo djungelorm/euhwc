@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Social Login
 Description: Customizes OneAll social login links to show an EUHWC button that can be used to log in using the website.
-Version: 1.3
+Version: 1.4
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
