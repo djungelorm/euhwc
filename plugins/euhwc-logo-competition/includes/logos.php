@@ -36,6 +36,7 @@ class EUHWCLogoCompetition_Logos {
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
+      'menu_icon' => 'dashicons-format-gallery',
       'supports' => array('title', 'author', 'thumbnail')
     );
 
@@ -137,7 +138,7 @@ class EUHWCLogoCompetition_Logos {
     require_once(ABSPATH . 'wp-admin/includes/image.php');
     require_once(ABSPATH . 'wp-admin/includes/file.php');
     require_once(ABSPATH . 'wp-admin/includes/media.php');
-    $attachment_id = media_handle_upload($file_id, $post_id);
+    $attachment_id = media_handle_upload($file_id, $post_id, array('post_title' => 'Logo'));
     update_post_meta($post_id, '_thumbnail_id', $attachment_id);
     $attachment_data = array(
       'ID' => $attachment_id,
