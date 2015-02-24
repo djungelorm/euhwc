@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Social Login
 Description: Customizes OneAll social login links to show an EUHWC button that can be used to log in using the website.
-Version: 1.3
+Version: 1.4
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
@@ -51,5 +51,14 @@ function euhwc_social_login_scripts() {
   wp_enqueue_style('euhwc-social-login-button');
 }
 add_action('wp_enqueue_scripts', 'euhwc_social_login_scripts');
+
+
+/**
+ * Set a verified role for a new user (avoids conflict with Register Plus Redux plugin)
+ */
+function euhwc_social_login_new_user_role($user_role) {
+  return 'subscriber';
+}
+add_filter('oa_social_login_filter_new_user_role', 'euhwc_social_login_new_user_role');
 
 ?>
