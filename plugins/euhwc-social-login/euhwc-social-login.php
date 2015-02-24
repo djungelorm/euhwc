@@ -52,4 +52,13 @@ function euhwc_social_login_scripts() {
 }
 add_action('wp_enqueue_scripts', 'euhwc_social_login_scripts');
 
+
+/**
+ * Set a verified role for a new user (avoids conflict with Register Plus Redux plugin)
+ */
+function euhwc_social_login_new_user_role($user_role) {
+  return 'subscriber';
+}
+add_filter('oa_social_login_filter_new_user_role', 'euhwc_social_login_new_user_role');
+
 ?>
