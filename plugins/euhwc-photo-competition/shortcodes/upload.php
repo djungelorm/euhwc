@@ -87,7 +87,7 @@ class EUHWCPhotoCompetition_Upload {
       $out .= '<p>'.$category->term->description.'</p>';
 
       // Get submitted photos, and pad with false up to max_entries
-      $photos = EUHWCPhotoCompetition_Photos::get($category);
+      $photos = EUHWCPhotoCompetition_Photos::get($category, null, $current_user->ID);
       $num_photos_submitted = count($photos);
       for ($i = count($photos); $i < $max_entries; $i++) {
         array_push($photos, false);

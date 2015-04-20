@@ -36,6 +36,7 @@ class EUHWCPhotoCompetition_Photos {
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
+      'menu_icon' => 'dashicons-format-gallery',
       'supports' => array('title', 'author', 'thumbnail')
     );
     register_post_type('euhwc_pcomp_photo', $args);
@@ -91,7 +92,8 @@ class EUHWCPhotoCompetition_Photos {
           'field' => 'term_id',
           'terms' => $category->term->term_id
         )
-      )
+      ),
+      'nopaging' => TRUE
     );
     if ($user_id !== null) {
       $args['author'] = $user_id;
