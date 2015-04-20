@@ -92,7 +92,8 @@ class EUHWCPhotoCompetition_Photos {
           'field' => 'term_id',
           'terms' => $category->term->term_id
         )
-      )
+      ),
+      'nopaging' => TRUE
     );
     if ($user_id !== null) {
       $args['author'] = $user_id;
