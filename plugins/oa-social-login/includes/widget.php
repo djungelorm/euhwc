@@ -35,7 +35,7 @@ class oa_social_login_widget extends WP_Widget
 			//Before Content
 			if (!empty ($instance ['widget_content_before']))
 			{
-				echo do_shortcode ( $instance ['widget_content_before'] );
+				echo $instance ['widget_content_before'];
 			}
 
 			//Content
