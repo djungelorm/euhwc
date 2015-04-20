@@ -82,7 +82,8 @@ class EUHWCLogoCompetition_Logos {
     $args = array(
       'post_type' => 'euhwc_logocomp_entry',
       'post_status' => 'publish',
-      'year' => $year
+      'year' => $year,
+      'nopaging' => TRUE
     );
     if ($user_id !== null) {
       $args['author'] = $user_id;
