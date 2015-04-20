@@ -36,7 +36,6 @@ class EUHWCLogoCompetition_Logos {
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
-      'menu_icon' => 'dashicons-format-gallery',
       'supports' => array('title', 'author', 'thumbnail')
     );
 
@@ -83,7 +82,8 @@ class EUHWCLogoCompetition_Logos {
     $args = array(
       'post_type' => 'euhwc_logocomp_entry',
       'post_status' => 'publish',
-      'year' => $year
+      'year' => $year,
+      'nopaging' => TRUE
     );
     if ($user_id !== null) {
       $args['author'] = $user_id;
