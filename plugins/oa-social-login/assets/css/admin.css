@@ -71,6 +71,7 @@
   background-color: #3E687B;
   color: #fff;
   text-shadow: 0 1px 0 #333;
+  padding-left: 10px;
 }
 
 .oa_social_login_table tr.row_head th a {
@@ -154,7 +155,7 @@
   display: inline-block;
 }
 
-.oa_social_login_provider_aol {
+.oa_social_login_provider_vimeo {
   background-position: -2px -1px;
 }
 
@@ -174,7 +175,7 @@
   background-position: -150px -1px;
 }
 
-.oa_social_login_provider_hyves {
+.oa_social_login_provider_reddit {
   background-position: -187px -1px;
 }
 
@@ -250,6 +251,17 @@
   background-position: -1038px -1px;
 }
 
-.oa_social_login_provider_xing {
+.oa_social_login_provider_deviantart {
   background-position: -1075px -1px;
+}
+
+.oa_social_login_provider_twitch {
+  background-position: -1112px -1px;
+}
+.oa_social_login_provider_amazon {
+  background-position: -1149px -1px;
+}
+
+.oa_social_login_provider_instagram {
+  background-position: -1186px -1px;
 }
