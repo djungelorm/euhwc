@@ -36,7 +36,6 @@ class EUHWCLogoCompetition_Logos {
       'hierarchical' => false,
       'map_meta_cap' => true,
       'menu_position' => null,
-      'menu_icon' => 'dashicons-format-gallery',
       'supports' => array('title', 'author', 'thumbnail')
     );
 
