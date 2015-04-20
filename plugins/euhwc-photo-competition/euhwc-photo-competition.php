@@ -2,7 +2,7 @@
 /*
 Plugin Name: EUHWC Photo Competition
 Description: Provides functionality to run a photo competition.
-Version: 2.0
+Version: 2.1
 Author: Alex Collins
 Author URI: http://www.linkedin.com/in/alexanderjamescollins
 License: WTFPL
